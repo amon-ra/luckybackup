@@ -97,7 +97,8 @@ void emailDialog::revertDefault(const int field)
     {
         //command
         case 0:    
-            uiE.lineEdit_command        -> setText(emailDefaultCommand);
+          if(WINrunning) uiE.lineEdit_command        -> setText(emailDefaultWinCommand);
+          else uiE.lineEdit_command        -> setText(emailDefaultCommand);
             break;
         //subject
         case 1:
@@ -151,11 +152,32 @@ void emailDialog::fillVariables()
     emailFrom       = uiE.lineEdit_arg_from -> text();
     emailTo         = uiE.lineEdit_arg_to -> text();
     emailSubject    = uiE.lineEdit_arg_subject -> text();
-    emailSMTP       = uiE.lineEdit_arg_smtp -> text();
+    QStringList smtpSrv = (uiE.lineEdit_arg_smtp -> text()).split(":");
+    emailSMTP       = smtpSrv.first();
+    QString smtpPort = "25";
+    if (smtpSrv.length()>1)
+        smtpPort=smtpSrv.at(1);
+    QString smtpUser = uiE.lineEdit_arg_smtp_user;
+    QString smtpPass = uiE.lineEdit_arg_smtp_pass;
     emailBody       = uiE.textBrowser_arg_body -> toPlainText();
     emailNever      = uiE.checkBox_conditionNever -> isChecked();
     emailError      = uiE.checkBox_conditionError -> isChecked();
     emailSchedule   = uiE.checkBox_conditionSchedule -> isChecked();
+    // Execute the email command
+    QProcess *emailProcess;                         emailProcess = new QProcess;
+    emailProcess -> setProcessChannelMode(QProcess::MergedChannels);
+    QDir::setCurrent(luckyBackupDir);
+    emailProcess -> setWorkingDirectory(luckyBackupDir);
+    QStringList args;
+    if (!smtpUser.isEmpty() && !smtpPass.isEmpty())
+    {
+        args << "-install" << emailSMTP << emailFrom <<"2" << smtpPort <<"-" << smtpUser << smtpPass;
+        emailProcess -> start ("blat.exe",args);
+        emailProcess -> waitForFinished(10000);
+    }
+
+    // Build the return string ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //QString errorOccured = emailProcess -> errorString();
 }
 
 // emailTest
