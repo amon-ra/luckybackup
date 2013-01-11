@@ -22,7 +22,7 @@
  project version    : Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 05 Mar 2012
+ last modified      : 10 Nov 2012
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -31,6 +31,8 @@
 #include "logDialog.cpp"
 #include "manageWizard.cpp"
 #include "calcDiffThread.cpp"
+#include "RsyncDirModel.cpp"
+
 
 // class manageDialog Constructor=================================================================================================
 // Displays the manage backups of a task dialog
@@ -52,12 +54,22 @@ manageDialog::manageDialog (QDialog *parent) : QDialog (parent)
     {
         sourceLast = calculateLastPath(source); // This is the lowest dir of the source
         
-        sourceLast.append(SLASH);
-        
         source.append(SLASH);
-        dest.append(sourceLast);
-        if (dest.endsWith(SLASH+SLASH))
-            dest.chop(1);
+        
+        if (WINrunning && Operation[currentOperation] -> GetRemote())
+        {
+            sourceLast.append(XnixSLASH);
+            dest.append(sourceLast);
+            if (dest.endsWith(XnixSLASH+XnixSLASH))
+                dest.chop(1);
+          }
+        else
+        {
+            sourceLast.append(SLASH);
+            dest.append(sourceLast);
+            if (dest.endsWith(SLASH+SLASH))
+                dest.chop(1);
+          }
     }
 
     uiG.setupUi(this);
@@ -184,23 +196,28 @@ void manageDialog::fixGui()
     // set the model of the treebrowsers (source & destination) sort by name & refresh to use new source & dest
     //destination
     QDirModel *d_model = new QDirModel;
-    d_model -> setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::AllEntries | QDir::Hidden);
-    d_model -> setSorting(QDir::Name | QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+    
+    //d_model -> setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::AllEntries | QDir::Hidden);
+    //d_model -> setSorting(QDir::Name | QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
 
-    uiG.treeView_browser -> setModel(d_model);
-    uiG.treeView_browser -> sortByColumn (0, Qt::AscendingOrder);
+    //uiG.treeView_browser -> setModel(d_model);
+    //uiG.treeView_browser -> sortByColumn (0, Qt::AscendingOrder);
     //if (CurrentSnapshotDir.exists())
     //	uiG.treeView_browser -> setRootIndex(d_model->index(CurrentSnapshotDirectory));
     //else
-        uiG.treeView_browser -> setRootIndex(d_model->index(dest));
+        
+        //uiG.treeView_browser -> setRootIndex(d_model->index(dest));
     
     //source
     QDirModel *s_model = new QDirModel;
-    s_model -> setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::AllEntries | QDir::Hidden);
-    s_model -> setSorting(QDir::Name | QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
-    uiG.treeView_source	-> setModel(s_model);
-    uiG.treeView_source 	-> sortByColumn (0, Qt::AscendingOrder);
-    uiG.treeView_source	-> setRootIndex(s_model->index(source));
+    
+    //s_model -> setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::AllEntries | QDir::Hidden);
+    //s_model -> setSorting(QDir::Name | QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+    //uiG.treeView_source	-> setModel(s_model);
+    //uiG.treeView_source 	-> sortByColumn (0, Qt::AscendingOrder);
+    //uiG.treeView_source	-> setRootIndex(s_model->index(source));
+    
+    RsyncDirModel *rsyncmodel=new RsyncDirModel;
     
     // if a snapshot is not selected 
     if (CurrentSnapshotString == "")
@@ -231,19 +248,129 @@ void manageDialog::fixGui()
     
     if (sourceRemote)		// If remote is used for source
     {
-        sourceVisible = FALSE;
-        uiG.label_sourceError -> setText("<font color=magenta>" + tr("Display of remote places is not supported",
-                                        "Information message") + "</font>");
+        //sourceVisible = FALSE;
+        //uiG.label_sourceError -> setText("<font color=magenta>" + tr("Display of remote places is not supported",
+        //                                "Information message") + "</font>");
+        
+        // ~~~~~~~~~~~~~~~~ Juan's patch for source~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        QStringList remoteArgs;
+        remoteArgs.append("--protect-args");
+        if ( Operation[currentOperation]-> GetRemoteModule() && Operation[currentOperation] -> GetRemotePassword() != "")
+            remoteArgs.append("--password-file=" + ( Operation[currentOperation] -> GetRemotePassword()) );
+        
+        if ( Operation[currentOperation] -> GetRemoteSSH())
+        {
+                if (WINrunning)
+                {
+                    if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
+                        if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                          remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword() +"\" -p " +
+                                        countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                        else
+                          remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword()+"\"");
+                    else
+                        if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                          remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                        else
+                            remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\"");
+                }
+            else
+            {
+                if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
+                    if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                        remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword() +" -p " +
+                                    countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                    else
+                        remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword());
+                else
+                    if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                        remoteArgs.append("-e "+sshCommandPath+" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                    else
+                        remoteArgs.append("-e "+sshCommandPath);
+            }
+        }
+        
+        rsyncmodel          -> setUrl(QUrl(source),rsyncCommandPath,remoteArgs);
+        uiG.treeView_source -> setModel(rsyncmodel);
+        uiG.treeView_source -> sortByColumn (0, Qt::AscendingOrder);
+        
+    }
+    else
+    {
+        s_model -> setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::AllEntries | QDir::Hidden);
+        s_model -> setSorting(QDir::Name | QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+        uiG.treeView_source    -> setModel(s_model);
+        uiG.treeView_source    -> sortByColumn (0, Qt::AscendingOrder);
+        uiG.treeView_source    -> setRootIndex(s_model->index(source));
     }
     if (destRemote)			// If remote is used for destination
     {
-        destVisible = FALSE;
-        
-// ********************** WARNING - Change this when you figure out a way to display/delete remote places *************************************
-        uiG.label_destError -> setText("<font color=magenta>" + tr("Display of remote places is not supported",
-                                        "Information message") + "</font>");
+        //        destVisible = FALSE;
+                
+        // ********************** WARNING - Change this when you figure out a way to display/delete remote places *************************************
+        //        uiG.label_destError -> setText("<font color=magenta>" + tr("Display of remote places is not supported",
+        //                                        "Information message") + "</font>");
         deleteVisible = FALSE;		//disable the delete button
+        
+        // ~~~~~~~~~~~~~~~~ Juan's patch for dest~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        QStringList remoteArgs;
+        remoteArgs.append("--protect-args");
+        if ( Operation[currentOperation]-> GetRemoteModule() && Operation[currentOperation] -> GetRemotePassword() != "")
+            remoteArgs.append("--password-file=" + ( Operation[currentOperation] -> GetRemotePassword()) );
+        
+        if ( Operation[currentOperation] -> GetRemoteSSH())
+        {
+                    if (WINrunning)
+                    {
+                        if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
+                            if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                              remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword() +"\" -p " +
+                                            countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                            else
+                              remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword()+"\"");
+                        else
+                            if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                              remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                            else
+                                remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\"");
+                    }
+
+            }
+            else
+            {
+                if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
+                    if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                        remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword() +" -p " +
+                                    countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                    else
+                        remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword());
+                else
+                    if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                        remoteArgs.append("-e "+sshCommandPath+" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                    else
+                        remoteArgs.append("-e "+sshCommandPath);
+            }
+        }
+        
+        rsyncmodel->setUrl(QUrl(dest),rsyncCommandPath,remoteArgs);
+        uiG.treeView_browser   -> setModel(rsyncmodel);
+        uiG.treeView_browser   -> sortByColumn (0, Qt::AscendingOrder);
     }
+    else        // Local destination
+    {
+        //if (CurrentSnapshotDir.exists())
+        // uiG.treeView_browser -> setRootIndex(d_model->index(CurrentSnapshotDirectory));
+        //else
+        
+        d_model -> setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::AllEntries | QDir::Hidden);
+        d_model -> setSorting(QDir::Name | QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+
+        uiG.treeView_browser -> setModel(d_model);
+        uiG.treeView_browser -> sortByColumn (0, Qt::AscendingOrder);
+        uiG.treeView_browser -> setRootIndex(d_model->index(dest));
+      }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Juan's patch END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
     // If source does not exist (and is not remote)
     if ((!sourceFile.exists()) && (!sourceRemote))
     {
@@ -349,7 +476,12 @@ void manageDialog::SnapshotsListSelected()
     else
     {
         CurrentSnapshotString = Operation[currentOperation] -> GetSnapshotsListItem (CurrentSnapshotNo);
-        CurrentSnapshotDirectory = dest + snapDefaultDir + CurrentSnapshotString + SLASH + sourceLast;
+        
+        if (WINrunning && Operation[currentOperation] -> GetRemote())
+            CurrentSnapshotDirectory = dest + snapDefaultDir.replace(SLASH,XnixSLASH) + CurrentSnapshotString + XnixSLASH + sourceLast;
+        else
+            CurrentSnapshotDirectory = dest + snapDefaultDir + CurrentSnapshotString + SLASH + sourceLast;
+        
         if (CurrentSnapshotString == "")	// if there is no execution time of the current snapshot
             CurrentSnapshotString = "not available";
     }

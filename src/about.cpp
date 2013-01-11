@@ -22,7 +22,7 @@
         project version   : Please see "main.cpp" for project version
 
         developer         : luckyb 
-        last modified     : 01 Mar 2012
+        last modified     : 02 Oct 2012
       ===============================================================================================================================
       ===============================================================================================================================
 */
@@ -130,6 +130,9 @@ void aboutDialog::setThanks()
         "<b>" + tr("Bruce Marriner") + "</b><br>" +
         tr("port to MS Windows") + "<br><br>"
         
+        "<b>" + tr("Juan Ramon Alfaro Martinez") + "</b><br>" +
+        tr("Code contributor for remote & vss support regarding the windows port") + "<br><br>"
+        
         "<b>" + tr("Jack Fink") + "</b><br>" +
         tr("port to Mac OS X") + "<br><br>"
         
@@ -150,6 +153,9 @@ void aboutDialog::setThanks()
         
         "<b>" + tr("Jason E. Hale") + "</b><br>" +
         tr("Free BSD package maintainer") + "<br><br>"
+        
+        "<b>" + tr("Dimitris Jemos") + "</b><br>" +
+        tr("Slackel package maintainer") + "<br><br>"
         
         "<b>" + tr("Thomas Janssen") + "</b><br>" +
         tr("ex Fedora package maintainer") + "<br><br>"
@@ -178,6 +184,9 @@ void aboutDialog::setThanks()
         "<b>" + tr("Aurelien Merckel") + "</b><br>" +
         tr("French gui translator") + "<br><br>"
 
+        "<b>" + tr("Sébastien Bourgain") + "</b><br>" +
+        tr("French gui translator") + "<br><br>"
+        
         "<b>" + tr("Francesco Braile") + "</b><br>" +
         tr("Italian gui translator") + "<br><br>"
         
@@ -187,12 +196,18 @@ void aboutDialog::setThanks()
         "<b>" + tr("pinguinofurioso") + "</b><br>" +
         tr("Italian gui translator") + "<br><br>"
         
+        "<b>" + tr("Alessio Ganci") + "</b><br>" +
+        tr("Italian gui translator") + "<br><br>"
+        
         "<b>" + tr("Denis Skorski") + "</b><br>" + "<a href=\"http://fripohled.blogspot.com/\" TARGET=\"_blank\">fripohled.blogspot.com</a><br>" +
         tr("Russian gui translator and valuable tester") + "<br><br>"
 
         "<b>" + tr("Kenny Verstraete") + "</b><br>" +
         tr("Dutch gui translator") + "<br><br>"
 
+        "<b>" + tr("linuxrev (Martin)") + "</b><br>" +
+        tr("Dutch gui translator") + "<br><br>"
+        
         "<b>" + tr("Subhi Honaco") + "</b><br>" +
         tr("Bosnian gui translator & mandriva package maintainer") + "<br><br>"
 
@@ -211,6 +226,9 @@ void aboutDialog::setThanks()
         "<b>" + tr("Marvin Gomez") + "</b><br>" +
         tr("Spanish gui translator") + "<br><br>"
 
+        "<b>" + tr("Antonio Jose Molina") + "</b><br>" +
+        tr("Spanish gui translator") + "<br><br>"
+        
         "<b>" + tr("Fredrik Holmgren") + "</b><br>" +
         tr("Swedish gui translator") + "<br><br>"
         
@@ -222,6 +240,12 @@ void aboutDialog::setThanks()
         
         "<b>" + tr("Rivo Zangov") + "</b><br>" +
         tr("Estonian gui translator") + "<br><br>"
+        
+        "<b>" + tr("Nicolay Boychev") + "</b><br>" +
+        tr("Bulgarian gui translator") + "<br><br>"
+        
+        "<b>" + tr("Manuel Meixide") + "</b><br>" +
+        tr("Galician gui translator") + "<br><br>"
         
         "<b>" + tr("Javi Romero") + "</b><br>" +
         tr("v0.3 gui designer") + "<br><br>"
@@ -252,7 +276,7 @@ void aboutDialog::setThanks()
         "<a href=\"http://forum.hellug.gr/\" target=\"_blank\">hellug</a>, "
         "and <a href=\"http://www.kde-apps.org//\" target=\"_blank\">kde-apps.org</a><br>" +
         tr("forums for their support.") + "<br><br>" +
-        tr("Especially") + "<br>constantinos, promeneur, grigris, dannys,marios, Regenwald, flo, Ilias Paraponiaris, Takis Vounatsos, Lieven Tytgat, mathetes, Johan Linde, Chris Sylvester, Manos Nikiforakis, Giorgos Katsikatsos, Ray Ambrosi, Barry Jackson, Damien Cassou, Carsten, Daniele Soldati Chris (slam), Paul Chapman, kingfame, Giorgos 'jeff' Finikianakis, Shelby Williams, Felix, skevo, Philipp F, Christian Harms, Paul Hewlett, Tristan Gross, Fabian Muscariello, James Mohr, Julie Pierson, Peter and Michael Daffin<br>" +
+        tr("Especially") + "<br>constantinos, promeneur, grigris, dannys,marios, Regenwald, flo, Ilias Paraponiaris, Takis Vounatsos, Lieven Tytgat, mathetes, Johan Linde, Chris Sylvester, Manos Nikiforakis, Giorgos Katsikatsos, Ray Ambrosi, Barry Jackson, Damien Cassou, Carsten, Daniele Soldati Chris (slam), Paul Chapman, kingfame, Giorgos 'jeff' Finikianakis, Shelby Williams, Felix, skevo, Philipp F, Christian Harms, Paul Hewlett, Tristan Gross, Fabian Muscariello, James Mohr, Julie Pierson, Peter, Michael Daffin and Kate Draven<br>" +
         tr("that contributed to this project one way or another") + "<br><br>" +
 
         tr("Last but no least") +":<br>"+

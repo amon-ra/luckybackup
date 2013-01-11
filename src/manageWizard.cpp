@@ -22,7 +22,7 @@ Class to launch a wizard for restore, delete a backup
 project version    : Please see "main.cpp" for project version
 
 developer          : luckyb 
-last modified      : 05 Mar 2012
+last modified      : 10 Nov 2012
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -71,10 +71,19 @@ manageWizard::manageWizard (QString type, QString SOURCE, QString DEST,  int sna
     // delete backup;if this are more than one snapshots available, set dir to delete as snapSpecificDir
     if ((wizard_type == "deleteBackup") && (snapshotsNo > 1))
         dest = snapSpecificDir.absolutePath();
-    if (notXnixRunning)
+    
+    if (WINrunning && Operation[currentOperation] -> GetRemote())
+    {
+        dest.replace("/",XnixSLASH);
+        if (dest.endsWith(XnixSLASH+XnixSLASH))
+            dest.chop(1);
+    }
+    else if (notXnixRunning)        // OS2 actually !!
+    {
         dest.replace("/",SLASH);
-    if (dest.endsWith(SLASH+SLASH))
-        dest.chop(1);
+        if (dest.endsWith(SLASH+SLASH))
+            dest.chop(1);
+    }
     
     errorCount = 0 ;
     errorsFound = 0;
@@ -210,7 +219,13 @@ void manageWizard::procFinished()
         MainRun = FALSE;
 
         time = Operation[currentOperation] -> GetSnapshotsListItem(snapToRestore);
-        QDir snapSpecificDir(dest + snapDefaultDir + time + SLASH);
+        QString tslash;
+        if (WINrunning && Operation[currentOperation] -> GetRemote())
+            tslash=XnixSLASH;
+        else
+            tslash=SLASH;
+        QDir snapSpecificDir(dest + snapDefaultDir + time + tslash);
+        
         if (snapSpecificDir.exists())
             snapSpecificDirExists = TRUE;
         else
@@ -490,7 +505,15 @@ void manageWizard::calcCommandArgs()
         commandArguments.append(dest);	// set new dest as source Argument  - as it was calculated at manageWizard
     }
     else
-        commandArguments.append(dest + snapDefaultDir + time + SLASH + sourceLast);
+    {
+        QString tslash;
+        if (WINrunning && Operation[currentOperation] -> GetRemote())
+            tslash=XnixSLASH;
+        else
+            tslash=SLASH;
+        
+        commandArguments.append(dest + snapDefaultDir + time + tslash + sourceLast);
+    }
         
     commandArguments.append(source);	// set new source as destination ...as it was calculated at manageWizard or changed by changeRestorePath
 }
