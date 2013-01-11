@@ -349,8 +349,8 @@ void manageDialog::fixGui()
                         remoteArgs.append("-e "+sshCommandPath+" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
                     else
                         remoteArgs.append("-e "+sshCommandPath);
-            }
         }
+
         
         rsyncmodel->setUrl(QUrl(dest),rsyncCommandPath,remoteArgs);
         uiG.treeView_browser   -> setModel(rsyncmodel);

@@ -1756,7 +1756,7 @@ QStringList AppendArguments(operation *operationToAppend)
                         arguments.append("-e "+sshCommandPath);
                 }
             }
-        }
+        }}
     }
     else		//Operate locally----------------------------------------------------------------------------------------
     {

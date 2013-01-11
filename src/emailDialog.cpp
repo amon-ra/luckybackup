@@ -157,8 +157,8 @@ void emailDialog::fillVariables()
     QString smtpPort = "25";
     if (smtpSrv.length()>1)
         smtpPort=smtpSrv.at(1);
-    QString smtpUser = uiE.lineEdit_arg_smtp_user;
-    QString smtpPass = uiE.lineEdit_arg_smtp_pass;
+    QString smtpUser = uiE.lineEdit_arg_smtp_user->text();
+    QString smtpPass = uiE.lineEdit_arg_smtp_pass->text();
     emailBody       = uiE.textBrowser_arg_body -> toPlainText();
     emailNever      = uiE.checkBox_conditionNever -> isChecked();
     emailError      = uiE.checkBox_conditionError -> isChecked();
