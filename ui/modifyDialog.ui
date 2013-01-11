@@ -692,7 +692,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>197</width>
+                <width>209</width>
                 <height>203</height>
                </rect>
               </property>
@@ -1840,80 +1840,15 @@ If you have no idea what these mean, leave them untouched !!</string>
               <bool>true</bool>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
-             <widget class="QWidget" name="page">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>110</width>
-                <height>85</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>backend</string>
-              </attribute>
-              <layout class="QGridLayout" name="gridLayout_16">
-               <item row="1" column="0">
-                <spacer name="verticalSpacer_10">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="0">
-                <layout class="QVBoxLayout" name="verticalLayout">
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_backendRsync">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <property name="text">
-                    <string>rsync</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_backendRdiff">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <property name="text">
-                    <string>rdiff-backup</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_backendRsnapshot">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <property name="text">
-                    <string>rsnapshot</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
              <widget class="QWidget" name="options_templates">
               <property name="geometry">
                <rect>
                 <x>0</x>
                 <y>0</y>
                 <width>582</width>
-                <height>231</height>
+                <height>258</height>
                </rect>
               </property>
               <attribute name="label">
@@ -2222,7 +2157,7 @@ Data ownership and permissions will NOT be preserved.
                  </property>
                 </widget>
                </item>
-               <item row="5" column="0" colspan="2">
+               <item row="5" column="0">
                 <widget class="QCheckBox" name="checkBox_numericIDs">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -2281,7 +2216,62 @@ and copying devices via the --devices option.
                  </property>
                 </widget>
                </item>
-               <item row="6" column="1">
+               <item row="6" column="0">
+                <widget class="QCheckBox" name="checkBox_vss">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="toolTip">
+                  <string>Try to backup open files in windows systems using vss (Only works on windows 2000 and upper)
+(--vss)</string>
+                 </property>
+                 <property name="text">
+                  <string>Backup open files</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="2">
+                <widget class="QCheckBox" name="checkBox_restorent">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="toolTip">
+                  <string>Restore backed-up windows permissions localized in nt-streams 
+(--restore-nt-streams)</string>
+                 </property>
+                 <property name="text">
+                  <string>Restore permisions</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="1">
                 <spacer name="verticalSpacer_3">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
@@ -2301,7 +2291,7 @@ and copying devices via the --devices option.
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>197</width>
+                <width>209</width>
                 <height>170</height>
                </rect>
               </property>
@@ -2851,7 +2841,7 @@ ATTENTION: check this if you really know what you're doing</string>
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>197</width>
+                <width>209</width>
                 <height>172</height>
                </rect>
               </property>
@@ -3399,9 +3389,6 @@ Leave unchecked to create an extra directory inside destination</string>
   <tabstop>pushButton_editInclude</tabstop>
   <tabstop>pushButton_moveUpInclude</tabstop>
   <tabstop>pushButton_moveDownInclude</tabstop>
-  <tabstop>radioButton_backendRsync</tabstop>
-  <tabstop>radioButton_backendRdiff</tabstop>
-  <tabstop>radioButton_backendRsnapshot</tabstop>
   <tabstop>checkBox_FATntfs</tabstop>
   <tabstop>pushButton_optionsAdd</tabstop>
   <tabstop>pushButton_editOptions</tabstop>
@@ -3461,22 +3448,6 @@ Leave unchecked to create an extra directory inside destination</string>
     <hint type="destinationlabel">
      <x>211</x>
      <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit_optionsAdd</sender>
-   <signal>returnPressed()</signal>
-   <receiver>pushButton_optionsAdd</receiver>
-   <slot>animateClick()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>86</x>
-     <y>190</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>211</x>
-     <y>191</y>
     </hint>
    </hints>
   </connection>
@@ -3701,6 +3672,22 @@ Leave unchecked to create an extra directory inside destination</string>
     <hint type="destinationlabel">
      <x>79</x>
      <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_optionsAdd</sender>
+   <signal>returnPressed()</signal>
+   <receiver>pushButton_optionsAdd</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>191</y>
     </hint>
    </hints>
   </connection>
