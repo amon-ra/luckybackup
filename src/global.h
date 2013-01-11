@@ -23,7 +23,7 @@
  project version    : Please see "main.cpp" for project version
 
  developer          : lucky
- last modified      : 05 Mar 2012
+ last modified      : 08 Nov 2012
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -35,11 +35,12 @@
 QString myHome = QDir::homePath();                          // user's home directory
 QString currentUser;                                        // will hold the current username (definition at luckybackupwindow.cpp)
 QString const appName = "luckyBackup";                      // application name
-double const appVersion = 0.47;                             // application version
-QString appVersionString = "0.4.7";                         // application version
+double const appVersion = 0.48;                             // application version
+QString appVersionString = "0.4.8";                         // application version
 double const validProfileVersion = 0.21;                    // profile version before this a profile won't be loaded
 double const validScheduleVersion = 0.34;                   // schedule version before this a schedule won't be loaded
-double const validSettingsVersion = 0.3;                    // Settings file valid version
+double const validSettingsVersion = 0.3; // Settings file valid version
+QString luckyBackupDefaultDir = myHome + "/."+appName+"/";
 QString luckyBackupDir = myHome + "/."+appName+"/";         // app working directory
 QString settingsFile = luckyBackupDir + "settings.ini";     // settings file
 QString profileDir = luckyBackupDir + "profiles/";          // profiles directory
@@ -147,16 +148,62 @@ QString emailDefaultBody    =   "Profile:      %p"
                                 "\nDate:         %d"
                                 "\nTime:         %i"
                                 "\nErrors found: %e";                   // Holds the default body text
-QString emailDefaultCommand =   "sendemail -f %f -t %t -u %s -m %b -a %l -s %v";     // Holds the default email command
+QString emailDefaultCommand =   "sendmail -f %f -t %t -u %s -m %b -a %l -s %v";     // Holds the default email command
+QString emailDefaultWinCommand =  "blat.exe - -f %f -to %t -attach %l -subject %s -server %v -body %b";     // Holds the default email command
 QString sendEmailNow (bool);                                // Send an email after a profile run. bool is TRUE if called for testing purposes
 
 QString rsyncDefaultCommand = "rsync";                      // Holds the default rsync command
 QString sshDefaultCommand = "ssh";                          // Holds the default ssh command
-QString rsyncDefaultWinCommand = "c:\\cygwin\\bin\\rsync.exe"; // Holds the default rsync command for windows
-QString sshDefaultWinCommand = "c:\\cygwin\\bin\\ssh.exe";  // Holds the default ssh command for windows
+
+
+//QString rsyncDefaultWinCommand = "c:\\cygwin\\bin\\rsync.exe"; // Holds the default rsync command for windows
+//QString sshDefaultWinCommand = "c:\\cygwin\\bin\\ssh.exe";  // Holds the default ssh command for windows
+QString appPath = QApplication::applicationDirPath();       // This is used for windows app path
+QString rsyncDefaultWinCommand = appPath + "rsync-wrapper.exe"; // Holds the default rsync command for windows
+QString sshDefaultWinCommand = appPath + "ssh.exe";  // Holds the default ssh command for windows
+
 QString rsyncCommandPath;       // holds the full path of the rsync command for WINDOWS or just "rsync" for *nix
 QString sshCommandPath;         // holds the full path of the ssh command for WINDOWS or just "ssh" for *nix
+QString mapdrive="w";
+QString vshadowDir=appPath.replace("/","\\");
+QString dosdevCommand=appPath.replace("/","\\")+"\\dosdev.exe";
+QString cygpathCommand=appPath.replace("/","\\")+"\\cygpath.exe";
+bool isTempDirPath=false;
+QString tempDirPath=QDir::tempPath();
+QString vshadowDefaultDir=appPath.replace("/","\\");
+QString dosdevDefaultCommand=appPath.replace("/","\\")+"\\dosdev.exe";
+QString cygpathDefaultCommand=appPath.replace("/","\\")+"\\cygpath.exe";
+QString tempDefaultDirPath=QDir::tempPath();
+void setAppDir(QString s);
+QString XnixSLASH = "/";        // holds the default Xnix slash which is /
 
+//bool loadSettingsQV();
+//bool loadSettings();
+//createWinRsyncCommand =================================================================================
+//QTemporaryFile command1(QDir::tempPath()+"\\qt_tempXXXXXX.bat");
+//QTemporaryFile command2(QDir::tempPath()+"\\qt_tempXXXXXX.bat");
+//if (WINrunning)
+//  {
+
+//   //bool createWinRsyncCommand(Operation[currentOperation]->GetTempPath(),QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
+//   if (!createWinRsyncCommand(Operation[currentOperation]->GetTempPath(),command1,command2,Operation[currentOperation]->GetOptionsVss(),rsyncArguments))
+//     cout << "\nfailed to create bat file in rmProccess";
+//   else
+//       syncProcess -> start (command2);
+//  }
+//else
+//  syncProcess -> start (command,rsyncArguments);
+//QString command2;
+int doVss=0;
+int vssPos=0;
+int vssErrPos=0;
+QTimer *vssTimer;
+int vssSleepTime=50;
+int vssReadSize=400;
+QFile *pipeVssFile;
+QFile *pipeVssErrFile;
+QString createWinMkdirCommand(QString tempPath,bool vss,QStringList rsyncArgs,bool logGui);
+QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bool logGui);
 #ifdef Q_OS_OS2
 bool OS2running = TRUE;
 #else

@@ -23,7 +23,7 @@ Display a dialog. Schedules profiles via cron
 project version    : Please see "main.cpp" for project version
 
 developer          : luckyb 
-last modified      : 01 Mar 12
+last modified      : 08 Nov 12
 
 ===============================================================================================================================
 ===============================================================================================================================
@@ -411,7 +411,12 @@ void scheduleDialog::viewCrontab()
 {
     // copy user's crontab to QString CronTab
     CronTab = "";
-    cronProcess -> start ("crontab",QStringList() << "-l");	// execute crontab -l command & capture output to QString CronTab
+    
+    if (WINrunning)
+          cronProcess -> start ("at ");    // execute crontab -l command & capture output to QString CronTab
+    else
+      cronProcess -> start ("crontab",QStringList() << "-l");  // execute crontab -l command & capture output to QString CronTab
+      
     cronProcess -> waitForStarted();
     cronProcess -> waitForFinished();
 
@@ -680,6 +685,12 @@ void scheduleDialog::createCron()
     QString luckyEntryStart = "\n# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ luckybackup entries ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     QString luckyEntryEnd = "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ end of luckybackup entries ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 
+    // windows used variables:
+    QString WinScheduleLine = "";
+    int WinScheduleType;
+    QString batFileName ="";
+    QString batLine ="";
+
     // copy user's crontab to QString CronTab & delete luckybackup's entries
     CronTab = "";
     cronProcess -> start ("crontab",QStringList() << "-l");	// execute crontab -l command & capture output to QString CronTab
@@ -687,6 +698,86 @@ void scheduleDialog::createCron()
     cronProcess -> waitForFinished();
     int x = CronTab.indexOf(luckyEntryStart);
     int y = CronTab.indexOf(luckyEntryEnd) + luckyEntryEnd.size() - x;
+    
+     //--------------------windows part - Juan patch ----------------------------------------
+    if (WINrunning)
+    {
+        //windows execute at to delete command
+        cronProcess -> start ("at /delete /yes");  // execute crontab command to replace the user's crontab with luckybackup cron
+        cronProcess -> waitForStarted();
+        cronProcess -> waitForFinished();
+        cronProcess -> start ("del "+scheduleDir+" *.bat");    // execute crontab command to replace the user's crontab with luckybackup cron
+        cronProcess -> waitForStarted();
+        cronProcess -> waitForFinished();
+        currentSchedule = 0;
+        while (currentSchedule < TotalSchedule)
+        {
+            if (!Schedule[currentSchedule] -> GetReboot() )            //append @reboot if checkbox selected NOT SUPPORTED
+            {
+                    WinScheduleLine = "";
+                    WinScheduleType=0;
+                    batFileName=scheduleDir;
+                        //begin windows time procesing: using at, cannot have hourly or monthly schedules
+                    WinScheduleLine.append(" "+countStr.setNum(Schedule[currentSchedule] -> GetHour())+":");
+                    batFileName.append(countStr.setNum(Schedule[currentSchedule] -> GetHour()));
+                    WinScheduleLine.append(countStr.setNum(Schedule[currentSchedule] -> GetMinute()) + " /every:");
+                    batFileName.append(countStr.setNum(Schedule[currentSchedule] -> GetMinute()));
+                    if (Schedule[currentSchedule] -> GetMonthDay() != 0)                    //Day of month
+                    {
+                            WinScheduleType=1;
+                            WinScheduleLine.append(countStr.setNum(Schedule[currentSchedule] -> GetMonthDay()) + " ");
+                            batFileName.append(countStr.setNum(Schedule[currentSchedule] -> GetMonthDay()) );
+                    }
+                    if (Schedule[currentSchedule] -> GetWeekDay() != 0)                 //Day of week
+                    {
+                            WinScheduleType=2;
+                            QList<QString> daytypes;
+                            daytypes << "L" << "M" << "X" << "J" << "V" << "S" << "D" ;
+                            WinScheduleLine.append(daytypes[Schedule[currentSchedule] -> GetWeekDay() -1]+ " ");
+                            batFileName.append(daytypes[Schedule[currentSchedule] -> GetWeekDay() -1]);
+                    }
+                    if (WinScheduleType==0)
+                            WinScheduleLine.append("D,L,M,Mi,J,V,S ");
+                    batFileName.append(".bat");
+                    WinScheduleLine.append(" cmd /c \"");
+                    WinScheduleLine.append(batFileName+"\"");
+                    batLine.append("\""+luckyBackupDir+"luckybackup.exe\" -c --no-questions ");
+
+
+                    if (Schedule[currentSchedule] -> GetSkipCritical())            //append --skip-critical
+                        batLine.append("--skip-critical ");
+
+                    ProfilePath = Schedule[currentSchedule] -> GetProfilePath();
+                    //ProfilePath.replace(" ", "\\ ");
+                    batLine.append("\""+ProfilePath+"\""); //append profile full path
+
+                    // append cron logfile part
+                    ProfileName = Schedule[currentSchedule] -> GetProfileName();
+                    //ProfileName.replace(" ", "\\ ");
+                    batLine.append(" > \"" + logDir + ProfileName + "-" + cronlogString +
+                            "\" 2>&1"+ "\n");      //append logfile output with >> instead of single >
+
+                    QFile batFile (batFileName);
+                    if (!batFile.open(QIODevice::WriteOnly | QIODevice::Text)) //create a new batFile as textfile
+                    QMessageBox::information(this, appName, tr("Unable to create cron file")+" !!<br><br>"+ batFile.errorString());
+                    else{
+                    //windows execute at to create command
+                        QTextStream batOut(&batFile);
+                        batOut << batLine;
+                        batFile.close();
+                        cronProcess -> start ("at "+WinScheduleLine);  // execute crontab command to replace the user's crontab with luckybackup cron
+                        cronProcess -> waitForStarted();
+                        cronProcess -> waitForFinished();
+                    }
+
+                    currentSchedule++;
+            }
+        }
+        QString nada=cronProcess -> readAllStandardOutput();
+        return;
+    }   //----------------windows part END---------------------------------
+    
+    
     CronTab.remove	(x,y);					//remove luckyBackup entries from CronTab
 
     QFile cronFile (cronfilename);
@@ -709,21 +800,24 @@ void scheduleDialog::createCron()
                 if (Schedule[currentSchedule] -> GetDelayReboot() > 0 )
                     ScheduleLine.append("sleep " + countStr.setNum(Schedule[currentSchedule] -> GetDelayReboot() * 60) +";    ");
             }
-            else									// else append time-day eth
+            else									// else append time-day etc
             {
                 ScheduleLine.append(countStr.setNum(Schedule[currentSchedule] -> GetMinute()) + " ");	//minute
                 if (Schedule[currentSchedule] -> GetHour() == -1)
                     ScheduleLine.append("* "); //hourly
                 else
                     ScheduleLine.append(countStr.setNum(Schedule[currentSchedule] -> GetHour()) + " ");	//hour
+                
                 if (Schedule[currentSchedule] -> GetMonthDay() == 0)					//Day of month
                     ScheduleLine.append("* ");
                 else
                     ScheduleLine.append(countStr.setNum(Schedule[currentSchedule] -> GetMonthDay()) + " ");
+                
                 if (Schedule[currentSchedule] -> GetMonth() == 0)					//Month
                     ScheduleLine.append("* ");
                 else
                     ScheduleLine.append(countStr.setNum(Schedule[currentSchedule] -> GetMonth()) + " ");
+                
                 if (Schedule[currentSchedule] -> GetWeekDay() == 0)					//Day of week
                     ScheduleLine.append("*	");
                 else

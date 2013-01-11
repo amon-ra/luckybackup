@@ -23,7 +23,7 @@ cpp file that does all stuff needed when a signal is transmitted (eg button pres
 project version	: Please see "main.cpp" for project version
 
 developer       : luckyb 
-last modified   : 10 Feb 2012
+last modified   : 08 Nov 2012
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -143,8 +143,8 @@ luckyBackupWindow::luckyBackupWindow(QMainWindow *parent) : QMainWindow(parent)
     connect ( ui.pushButton_up, SIGNAL( clicked() ), this, SLOT( moveUp() ) );		//pushbutton up
     connect ( ui.pushButton_down, SIGNAL( clicked() ), this, SLOT( moveDown() ) );		//pushbutton down
     connect ( ui.pushButton_start, SIGNAL( clicked() ), this, SLOT( start() ) );		//pushbutton start
-    connect ( ui.listWidget_operations, SIGNAL( itemClicked ( QListWidgetItem*) ), this, SLOT( checkCurrentItem() ) );
-    connect ( ui.listWidget_operations, SIGNAL( itemChanged ( QListWidgetItem* ) ), this, SLOT( taskStateChanged() ) );
+    connect ( ui.listWidget_operations, SIGNAL( itemClicked ( QListWidgetItem*) ), this, SLOT( checkCurrentItem(QListWidgetItem *) ) );
+    connect ( ui.listWidget_operations, SIGNAL( itemChanged ( QListWidgetItem*) ), this, SLOT( taskStateChanged() ) );
 
     connect (ui.pushButton_minimizeToTray, SIGNAL (clicked() ), this, SLOT(minimizeTray()));//pushbutton minimize to tray
     connect (ui.pushButton_previousError, SIGNAL (clicked() ), this, SLOT(previousErrorJump()));//pushbutton jump to prev error
@@ -171,7 +171,7 @@ QMessageBox::warning(this, "luckybackup",       "This is a testing version of <b
                                                 "</b><br>Operating system in use: <b>"+tempOSrunning +"</b><br><br>         Loukas :)");*/
 // ********************* END of TESTING ******************************************************************************************
 
-    checkCurrentItem();	//refresh the selected (last) task as well as the menu items that depend on its type (sync/backup)
+    checkCurrentItem(ui.listWidget_operations -> currentItem());	//refresh the selected (last) task as well as the menu items that depend on its type (sync/backup)
 
     createProfileCombo();	// update the profile combobox with all existing profiles and set index to currentProfile
     InfoData.append("<p align=\"center\"><font color=magenta><b>" + tr("Welcome to","full phrase: 'Welcome to luckyBackup'") +" "
@@ -749,8 +749,16 @@ void luckyBackupWindow::AlsoCreateRestore()
 
     if (Operation[currentOperation] -> GetTypeDirName())
     {
-        sourceDir.append(destDir.right(destDir.size() - destDir.lastIndexOf(SLASH) - 1));
-        destDir.chop(destDir.size() - destDir.lastIndexOf(SLASH) - 1);
+        if (WINrunning && Operation[currentOperation] -> GetRemote())
+        {
+            sourceDir.append(destDir.right(destDir.size() - destDir.lastIndexOf(XnixSLASH) - 1));
+            destDir.chop(destDir.size() - destDir.lastIndexOf(XnixSLASH) - 1);
+        }
+        else
+        {
+            sourceDir.append(destDir.right(destDir.size() - destDir.lastIndexOf(SLASH) - 1));
+            destDir.chop(destDir.size() - destDir.lastIndexOf(SLASH) - 1);
+        }
     }
 
     Operation[currentOperation] -> SetSource (sourceDir);
@@ -1021,7 +1029,7 @@ void luckyBackupWindow::add()
         ui.listWidget_operations -> addItem( Operation[currentOperation] -> GetName() );
         ui.listWidget_operations -> setCurrentRow(currentOperation);
         ui.listWidget_operations -> currentItem() -> setCheckState(Qt::Unchecked);
-        checkCurrentItem();
+        checkCurrentItem(ui.listWidget_operations -> currentItem());
         TotalOperations = ui.listWidget_operations -> count();		//set the TotalOperations to what it is now
         savedProfile = FALSE;			//change profile status to "unsaved"
         ui.actionSave -> setEnabled(TRUE);
@@ -1075,7 +1083,7 @@ void luckyBackupWindow::modify()
         Operation[currentOperation] -> SetConnectRestore(tempConnect);		//set the connection to what it was
         if (tempConnect != "")
             Operation[connectPosition]->SetConnectRestore(newTaskName);
-        checkCurrentItem();
+        checkCurrentItem(ui.listWidget_operations -> currentItem());
         
         // update all relevant snap .changes as well as log files if the task name changes
         if (newTaskName != oldTaskName)
@@ -1166,7 +1174,7 @@ void luckyBackupWindow::manage()
     manageDialog managedialog;
     managedialog.exec();
     
-    checkCurrentItem();	//refresh the selected task
+    checkCurrentItem(ui.listWidget_operations -> currentItem());	//refresh the selected task
     saveCurrentProfile();	// save the profile if any snapshots have been deleted
 //	refreshList(); //refresh the listWidget_operations
 }
@@ -1237,7 +1245,7 @@ void luckyBackupWindow::start()
     {
         InfoData = "<font color=red><b>" + tr("ERROR") + "</b></font><br>" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br><b>" +
-                tr("You have only incuded tasks that are going to be skipped") + "</b><br>" +
+                tr("You have only included tasks that are going to be skipped") + "</b><br>" +
                 "..." + tr("nothing to do") +" !!";
         
         ui.textBrowser_info -> setText(InfoData);
@@ -1288,6 +1296,8 @@ void luckyBackupWindow::taskStateChanged()
     //theory (due to connections at luckybackwindow constructor):
     //when an item is just clicked functions called: checkCurrentItem -> taskStateChanged
     //when a checkbox state changes functiond called: taskStateChanged -> checkCurrentItem -> taskStateChanged
+    //when a checkbox state changes not by clicking but with SPACEBAR, only taskStateChanged is called !!
+
     if (!taskChanged)
     {
         if (taskClicked)
@@ -1309,12 +1319,15 @@ void luckyBackupWindow::taskStateChanged()
 
 // checkCurrentItem =================================================================================================================================
 // Checks the currently selected operation (if checked) for validity
-void luckyBackupWindow::checkCurrentItem()
+void luckyBackupWindow::checkCurrentItem(QListWidgetItem *thisIsTheCurrentItem)
 {
     taskClicked = TRUE;	//this is used at taskStateChanged() to determine if a task state is changed
 
     InfoData="";
     CheckedData = "";
+    
+    // use this because when a checkbox state changes and another item is selected, it remains this way. The checked one does not become selected !!
+    ui.listWidget_operations -> setCurrentItem(thisIsTheCurrentItem); 
     currentOperation = ui.listWidget_operations -> currentRow();
     
     if (currentOperation < 0)	// to avoid segfault when nothing selected

@@ -23,7 +23,7 @@
  project version	: Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 01 Feb 2012
+ last modified      : 30 Oct 2012
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -60,40 +60,40 @@ class luckyBackupWindow : public QMainWindow
         int count;          //simple count variable !!
 
     private slots:
-        void profileComboChanged();	// SLOT to set the currentProfile when profileCombo index changes
-        void savePressed();		// SLOT to execute when "save" pressed
-        void deleteCurrentProfile();	//SLOT: Delete the current profile
-        void NewProfile();		//SLOT: Create a new empty profile
-        void setDefaultProfile();	//SLOT: Set the current profile as default
-        void renameCurrentProfile();	//SLOT: rename the current profile
-        void exportProfile();		//SLOT to export a profile
-        void importProfile();		//SLOT to import a profile
-        void duplicateProfile();	//SLOT to duplicate a profile
+        void profileComboChanged(); // SLOT to set the currentProfile when profileCombo index changes
+        void savePressed();         // SLOT to execute when "save" pressed
+        void deleteCurrentProfile();//SLOT: Delete the current profile
+        void NewProfile();          //SLOT: Create a new empty profile
+        void setDefaultProfile();   //SLOT: Set the current profile as default
+        void renameCurrentProfile();//SLOT: rename the current profile
+        void exportProfile();       //SLOT to export a profile
+        void importProfile();       //SLOT to import a profile
+        void duplicateProfile();    //SLOT to duplicate a profile
         void changeProfileDescription();//SLOT to change the profile description
 
-        void exitApp();		//SLOT: check if a profile is saved and exit application
+        void exitApp();             //SLOT: check if a profile is saved and exit application
 
-        void help();		//SLOT: open "help" popup when action selected
-        void about();		//SLOT: open "about" popup when action selected
-        void setToolbarAttrs();	//SLOT: sets the toolbar attributes
-        void setWinPaths(); //SLOT: sets the rsync and ssh paths for windows
+        void help();                //SLOT: open "help" popup when action selected
+        void about();               //SLOT: open "about" popup when action selected
+        void setToolbarAttrs();     //SLOT: sets the toolbar attributes
+        void setWinPaths();         //SLOT: sets the rsync and ssh paths for windows
 
-        void setLanguage(QAction *);	//SLOT: Change the application language
+        void setLanguage(QAction *);//SLOT: Change the application language
 
-        void checkCurrentItem();	//SLOT: Check the currently selected operation and set an icon
-        void taskStateChanged();	//SLOT: Sets the profile state to unsaved if a task checkbox is changed
-        void refreshList();	//SLOT: Refresh the operations list when refresh button pressed
-        void start();		//SLOT: Open start operations dialog when Button clicked()
-        void modify();		//SLOT: Modify an existing task. Will also save it if bool is TRUE
-        void add();		//SLOT: Add a new task
-        void remove();		//SLOT: remove highlighted task
-        void manage();		//SLOT: Manage existing backups of an existing task
-        void AlsoCreateRestore();//SLOT: Create another operation for RESTORE
-        void duplicateTask();		//SLOT to duplicate a task
-        void moveUp();		//SLOT: move  highlighted operation one position up
-        void moveDown();	//SLOT: move  highlighted operation one position down
-        void schedule();	//SLOT: Open schedule dialog when Button clicked()
-        void email();       //SLOT: Open email dialog when Button clicked()
+        void checkCurrentItem(QListWidgetItem *);	//SLOT: Check the currently selected operation and set an icon
+        void taskStateChanged();    //SLOT: Sets the profile state to unsaved if a task checkbox is changed
+        void refreshList();         //SLOT: Refresh the operations list when refresh button pressed
+        void start();               //SLOT: Open start operations dialog when Button clicked()
+        void modify();              //SLOT: Modify an existing task. Will also save it if bool is TRUE
+        void add();                 //SLOT: Add a new task
+        void remove();              //SLOT: remove highlighted task
+        void manage();              //SLOT: Manage existing backups of an existing task
+        void AlsoCreateRestore();   //SLOT: Create another operation for RESTORE
+        void duplicateTask();       //SLOT to duplicate a task
+        void moveUp();              //SLOT: move  highlighted operation one position up
+        void moveDown();            //SLOT: move  highlighted operation one position down
+        void schedule();            //SLOT: Open schedule dialog when Button clicked()
+        void email();               //SLOT: Open email dialog when Button clicked()
         
         void hideShowInfoWindow();	// SLOT to hide or show the info window
 
@@ -101,6 +101,8 @@ class luckyBackupWindow : public QMainWindow
         void abortPressed();		//SLOT when button pressed( see also notYet)
         void donePressed();		//SLOT when done button pressed
         void appendRsyncOutput();	//Display o/p to textbrowser & update logfile
+        void appendRsyncVssOutput();
+        void appendRsyncVssOutput(int size);
         void procFinished();		//SLOT executed when syncProcess is finshed (will start a new syncProcess if any left)
         void procError();        // SLOT for when a process reports an error (eg: failed to start)
         

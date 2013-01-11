@@ -23,7 +23,7 @@
  project version    : Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 13 Feb 2012
+ last modified      : 08 Nov 2012
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -145,6 +145,8 @@ class operation
         bool GetOptionsFATntfs() const          {return itsOptionsFATntfs;}
         bool GetOptionsSuper() const            {return itsOptionsSuper;}
         bool GetOptionsNumericIDs() const       {return itsOptionsNumericIDs;}
+        bool GetOptionsVss () const             {return itsOptionsVss;}
+        bool GetOptionsRestorent () const       {return itsOptionsRestorent;}
         int GetOptionsListSize () const         {return itsOptionsList.size();}
         QString GetOptionsListItem (int itemPosition) const {return itsOptionsList.value(itemPosition);}
 
@@ -273,7 +275,22 @@ class operation
         void AddExecuteBeforeListItemState (bool itemState) { itsExecuteBeforeListState.append(itemState);}
         void AddExecuteAfterListItem (QString itemText)     { itsExecuteAfterList.append(itemText);}
         void AddExecuteAfterListItemState (bool itemState)  { itsExecuteAfterListState.append(itemState);}
-
+        void SetOptionsRestorent (bool Options)             { itsOptionsRestorent = Options;}
+        void SetOptionsVss (bool Options)                   { itsOptionsVss = Options;}
+        QString GetTempPath () const      {return itsTempPath;}
+        void SetTempPath (QString s)    {itsTempPath = s;}
+        QString GetLuckyBackupDir ( ) { return itsAppDir; }
+        void SetLuckyBackupDir (QString s) { itsAppDir = s; }
+        QString GetVshadowDir () const      {return itsVshadowDir;}
+        void SetVshadowDir (QString s)    {itsVshadowDir = s;}
+        QString GetRsyncCommand () const      {return itsRsyncCommand;}
+        void SetRsyncCommand (QString s)    {itsRsyncCommand = s;}
+        QString GetDosdevCommand () const      {return itsDosdevCommand;}
+        void SetDosdevCommand (QString s)    {itsDosdevCommand = s;}
+        QString GetCygpathCommand () const      {return itsCygpathCommand;}
+        void SetCygpathCommand (QString s)    {itsCygpathCommand = s;}
+        QString GetSshCommand () const      {return itsSshCommand;}
+        void SetSshCommand (QString s)    {itsSshCommand = s;}
     private:
         QString itsName;
         QStringList itsArguments;
@@ -346,12 +363,22 @@ class operation
         bool itsOptionsFATntfs;
         bool itsOptionsSuper;
         bool itsOptionsNumericIDs;
+        bool itsOptionsVss;
+        bool itsOptionsRestorent;
         QStringList itsOptionsList;
 
         QStringList itsExecuteBeforeList;
         QList<bool> itsExecuteBeforeListState;
         QStringList itsExecuteAfterList;
         QList<bool> itsExecuteAfterListState;
+        QString itsTempPath;
+        QString itsAppDir;
+        QString itsVshadowDir;
+        QString itsRsyncCommand;
+        QString itsDosdevCommand;
+        QString itsCygpathCommand;
+        QString itsSshCommand;
+
 };
 
 #endif

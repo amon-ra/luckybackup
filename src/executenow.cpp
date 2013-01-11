@@ -23,7 +23,7 @@ do everything that deals with commands (rsync & others) execution
 project version	: Please see "main.cpp" for project version
 
 developer          : luckyb 
-last modified      : 12 Mar 2012
+last modified      : 10 Nov 2012
 ===============================================================================================================================
 ===============================================================================================================================
 ********************************** DO NOT FORGET TO CHANGE "commandline.cpp:rsyncIT()" ********************************************************
@@ -98,6 +98,27 @@ void luckyBackupWindow::executeNOW ()
     connect ( ui.AbortButton, SIGNAL( clicked() ), this, SLOT( abortPressed() ) );	//connect abort pushButton SLOT ----------------
     connect ( ui.DoneButton, SIGNAL( clicked() ), this, SLOT( donePressed() ) );	//connect done pushButton SLOT ----------------
 
+    if (WINrunning){
+        vssTimer= new QTimer(this);
+
+        pipeVssFile =  new QFile(tempDirPath+"\\qt_tempvss"+QString::number(qrand() % (999998) + 1));
+        if (pipeVssFile->open(QIODevice::ReadWrite)){
+            pipeVssFile->close();
+//            if (pipeVssFile->open(QIODevice::ReadOnly | QIODevice::Text))
+//              connect(pipeVssFile,SIGNAL(readyRead()),this,SLOT(appendRsyncVssOutput()));
+          }
+        pipeVssErrFile =  new QFile(tempDirPath+"\\qt_tempvsserr"+QString::number(qrand() % (999998) + 1));
+        if (pipeVssErrFile->open(QIODevice::ReadWrite)){
+            pipeVssErrFile->close();
+//            if (pipeVssErrFile->open(QIODevice::ReadOnly | QIODevice::Text))
+//              connect(pipeVssErrFile,SIGNAL(readyRead()),this,SLOT(appendRsyncVssOutput()));
+          }
+        if (Operation[currentOperation]->GetOptionsVss()){
+          connect (vssTimer,SIGNAL(timeout()),this,SLOT(appendRsyncVssOutput()));
+          vssTimer->start(vssSleepTime);
+          }
+
+      }
     syncProcess = new QProcess(this);	//create a new qprocess (for rsync) & connect signals
     connect(syncProcess, SIGNAL(readyReadStandardError()), this, SLOT(appendRsyncOutput()));
     connect(syncProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(appendRsyncOutput()));
@@ -383,36 +404,61 @@ void luckyBackupWindow::executeBeforeTask()
         QStringList tempArguments = Operation[currentOperation] -> GetArgs();
         QString tempSource = tempArguments[tempArguments.size()-2];
         QString tempDestination = tempArguments[tempArguments.size()-1];
+        QString tempDestinationOrig;
         QString sourceLast = tempSource;
         if (!tempSource.endsWith(SLASH))    // this means task is of type "backup dir by name"
         {
             sourceLast = calculateLastPath(sourceLast); // This is the lowest dir of the source
             
             tempSource.append(SLASH);
-            tempDestination.append(sourceLast + SLASH);
+            if (WINrunning && RemoteDestUsed)
+                tempDestination.append(sourceLast + XnixSLASH);
+            else
+                tempDestination.append(sourceLast + SLASH);
         }
-        tempDestination.append (snapDefaultDir);
+        if (RemoteDestUsed && WINrunning)
+            tempDestination.append (snapDefaultDir.replace(SLASH,XnixSLASH));
+        else
+            tempDestination.append (snapDefaultDir);
         
         QStringList remoteArgs; remoteArgs.clear();
         //all remote arguments exactly as used at normal backup
         if (RemoteDestUsed)
         {
             remoteArgs.append("--protect-args");
-            if ( Operation[currentOperation] -> GetRemotePassword() != "")
+            //if ( Operation[currentOperation] -> GetRemotePassword() != "")
+            if ( Operation[currentOperation]-> GetRemoteModule() && Operation[currentOperation] -> GetRemotePassword() != "")
                 remoteArgs.append("--password-file=" + ( Operation[currentOperation] -> GetRemotePassword()) );
             if ( Operation[currentOperation] -> GetRemoteSSH())
             {
-                if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
-                    if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
-                        remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword() +" -p " +
-                                    countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                if (WINrunning)
+                {
+                    if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
+                        if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                          remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword() +"\" -p " +
+                                        countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                        else
+                          remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword()+"\"");
                     else
-                        remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword());
+                        if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                          remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                        else
+                            remoteArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\"");
+                }
                 else
-                    if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
-                        remoteArgs.append("-e "+sshCommandPath+" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                {
+                    if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
+                        if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                            remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword() +" -p " +
+                                        countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                        else
+                            remoteArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword());
                     else
-                        remoteArgs.append("-e "+sshCommandPath);
+                        if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
+                            remoteArgs.append("-e "+sshCommandPath+" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
+                        else
+                            remoteArgs.append("-e "+sshCommandPath);
+                }
             }
         }
         
@@ -441,11 +487,17 @@ void luckyBackupWindow::executeBeforeTask()
             int snapToKeep = currentSnaps-maxSnaps + 1;
             while ( snapToKeep < currentSnaps )
             {
-                rmArgs.append("--filter=protect " + Operation[currentOperation] -> GetSnapshotsListItem(snapToKeep) + SLASH);
+                if (WINrunning && RemoteDestUsed)
+                    rmArgs.append("--filter=protect " + Operation[currentOperation] -> GetSnapshotsListItem(snapToKeep) + XnixSLASH);
+                else
+                    rmArgs.append("--filter=protect " + Operation[currentOperation] -> GetSnapshotsListItem(snapToKeep) + SLASH);
                 snapToKeep++;
             }
             // protect the backup profile dir too
-            rmArgs.append("--filter=protect " + profileName + ".profile" + SLASH);
+            if (WINrunning && RemoteDestUsed)
+                rmArgs.append("--filter=protect " + profileName + ".profile" + XnixSLASH);
+            else
+                rmArgs.append("--filter=protect " + profileName + ".profile" + SLASH);
             
             //also add all remote arguments exactly as used at normal backup
             if (RemoteDestUsed)
@@ -454,8 +506,18 @@ void luckyBackupWindow::executeBeforeTask()
             
             rmArgs.append(snapEmptyDir);
             rmArgs.append(tempDestination);
-            
-            rmProcess -> start (command,rmArgs);
+            if (WINrunning)
+              {
+
+               //bool createWinRsyncCommand(tempDirPath,QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
+                QString command2=createWinRsyncCommand(tempDirPath,false,rmArgs);
+                if (command2=="")
+                 cout << "\nfailed to create bat file in rmProccess";
+               else
+                 rmProcess -> start (command2);
+              }
+            else
+              rmProcess -> start (command,rmArgs);
             rmProcess -> waitForFinished();
             
             if ((rmProcess -> exitCode()) == 0)
@@ -503,16 +565,52 @@ void luckyBackupWindow::executeBeforeTask()
             QProcess *mkdirProcess;
             mkdirProcess  = new QProcess(this);
             QStringList mkdirArgs;      mkdirArgs.clear();
-            mkdirArgs << "--progress" << "-r";
+			//no more needed
+            //if (WINrunning && RemoteDestUsed)
+            //  mkdirArgs << "--mkdir";
+            //else
+              mkdirArgs << "--progress" << "-r";
             
             //add all remote arguments exactly as used at normal backup
             if (RemoteDestUsed)
                 //mkdirArgs.append(remoteArgs);   // use operator << instead of append to maintain compatiiblity with debian 5
                 mkdirArgs << remoteArgs;
             
-            mkdirArgs.append(snapEmptyDir);
+            //rsync throws error if directory not created, we solve creating
+			mkdirArgs.append(snapEmptyDir);
+            mkdirArgs.append(tempDestinationOrig);
+            if (WINrunning)
+              {
+
+               //bool createWinRsyncCommand(tempDirPath,QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
+                QString command2=createWinRsyncCommand(tempDirPath,false,mkdirArgs);
+               if (command2=="")
+                 cout << "\nfailed to create bat file in rmProccess";
+               else
+                 mkdirProcess -> start (command2);
+              }
+            else
+              mkdirProcess -> start (command,mkdirArgs);
+            mkdirProcess -> waitForFinished();
+
+            if ((mkdirProcess -> exitCode()) == 0)
+                ui.rsyncOutput->append("\n!!");
+            else
+                ui.rsyncOutput->append("\n!");
+            mkdirArgs.removeLast();
             mkdirArgs.append(tempDestination);
-            mkdirProcess -> start (command,mkdirArgs);
+            if (WINrunning)
+              {
+
+               //bool createWinRsyncCommand(tempDirPath,QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
+                QString command2=createWinRsyncCommand(tempDirPath,false,mkdirArgs);
+               if (command2=="")
+                 cout << "\nfailed to create bat file in rmProccess";
+               else
+                 mkdirProcess -> start (command2);
+              }
+            else
+              mkdirProcess -> start (command,mkdirArgs);
             mkdirProcess -> waitForFinished();
             
             if ((mkdirProcess -> exitCode()) == 0)
@@ -703,9 +801,20 @@ void luckyBackupWindow::executeRsync()
     ui.OperationProgress -> setValue (0);
     
     ProcReportedError = FALSE;      // This might change as soon as syncprocess will start ()
+    if (WINrunning)
+      {
 
-    syncProcess -> start (command,rsyncArguments);	// execute rsync command with rsyncArguments
-    
+       //bool createWinRsyncCommand(tempDirPath,QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
+       QString command2=createWinRsyncCommand(tempDirPath,Operation[currentOperation]->GetOptionsVss(),rsyncArguments);
+       if (command2=="")
+         cout << "\nfailed to create bat file for vss";
+       else
+         syncProcess -> start (command2);
+      }
+    else
+      syncProcess -> start (command,rsyncArguments);	// execute rsync command with rsyncArguments
+
+
     // The reason for the below jump is that when a process reports an error it does not emit finished() signals neither std output/errors
     if (ProcReportedError)
         procFinished();
@@ -716,7 +825,11 @@ void luckyBackupWindow::procFinished()
 {
     if (ABORTpressed) //this is to prevent segmentation fault when abort button pressed
         return;
-
+    if (doVss==1) //reads all log file in vss before finished
+      {
+        doVss=2;
+        return;
+      }
     bool RemoteDestUsed = (Operation[currentOperation] -> GetRemoteDestination()) && (Operation[currentOperation] -> GetRemote()); // Is remote dest used ?
     if (ExecuteBefore)		// if the pre-task execution command (process) finished
     {
@@ -835,7 +948,12 @@ void luckyBackupWindow::procFinished()
                 sourceLast = "";
             
             if (!rsyncArguments.isEmpty())      //rsyncArguments is calculated at executeRsync()
-                exportProfileDir = rsyncArguments.last() + sourceLast + SLASH + snapDefaultDir + profileName + ".profile" + SLASH;
+            {
+                if (WINrunning && RemoteDestUsed)
+                    exportProfileDir = rsyncArguments.last() + sourceLast + XnixSLASH + snapDefaultDir + profileName + ".profile" + XnixSLASH;
+                else
+                    exportProfileDir = rsyncArguments.last() + sourceLast + SLASH + snapDefaultDir + profileName + ".profile" + SLASH;
+            }
             
             //QMessageBox::information(this, "LB",exportProfileDir);    //TESTING
             
@@ -989,6 +1107,122 @@ void luckyBackupWindow::appendRsyncOutput()
         transferring = FALSE;
         deleting = TRUE;
     }
+}
+
+void luckyBackupWindow::appendRsyncVssOutput()
+{
+  appendRsyncVssOutput(vssReadSize);
+}
+
+//Read size lines, if size=-1 read all file
+void luckyBackupWindow::appendRsyncVssOutput(int size)
+{
+    if (ABORTpressed)		//better safe than sorry :)
+        return;
+    if (doVss==0)
+      return;
+    setNowDoing ();		//update Nowdoing textBrowser
+
+
+
+    QString s,se;
+    if (pipeVssFile->open(QIODevice::ReadOnly | QIODevice::Text)){
+        int i=size;
+        QTextStream stream(pipeVssFile);
+        stream.setCodec("UTF-8");
+        stream.seek(vssPos);
+        outputString="";
+        s=stream.readLine();
+        while(!s.isNull()&&i!=0){
+            outputString=outputString+s+"\n";
+            s=stream.readLine();
+            //if (!showOnlyErrors)
+            i--;
+          };
+        vssPos=stream.pos();
+        pipeVssFile->close();
+        if (outputString !="")
+          {
+        if (!ui.checkBox_onlyShowErrors -> isChecked())
+            ui.rsyncOutput->append(outputString);
+        logFileUpdate("rsync-standard", outputString, 0);
+        //update progressbar--------------------------------------------------------------------------------------------------------
+        bool ok;
+        if (outputString.contains("to-check"))	//we will calculate how many files have been proccessed so far
+        {
+            //DoneToTotal_Ref & DoneToTotal_String hold a e.g. "17/84"
+            QStringRef DoneToTotal_Ref = outputString.midRef(outputString.indexOf("check=")+6,outputString.indexOf(")")-outputString.indexOf("check=")-6);
+            QString DoneToTotal_String = DoneToTotal_Ref.toString();
+
+            //Total no files
+            QStringRef ref_temp = DoneToTotal_String.rightRef(DoneToTotal_String.size() - DoneToTotal_String.indexOf(SLASH) -1);
+            QString string_temp = ref_temp.toString();
+            progress_total = string_temp.toInt(&ok,10);
+            ui.OperationProgress -> setRange(0,progress_total);	//set the range of the progressbar to the no of files to consider
+
+            //No of files processed so far
+            ref_temp = DoneToTotal_String.leftRef(DoneToTotal_String.indexOf(SLASH));
+            string_temp = ref_temp.toString();
+            progress_done = string_temp.toInt(&ok,10);
+            progress_done = progress_total - progress_done;
+            ui.OperationProgress -> setValue (progress_done);	//set the current progressbar value
+        }
+        if (outputString.contains("speedup is"))	//the process has finished, so if we're back fill it to 100%
+        {
+            ui.OperationProgress -> setRange(0,100);
+            ui.OperationProgress -> setValue (100);
+        }
+        if (outputString.contains("building file list"))
+        {
+            calculating = TRUE;
+            transferring = FALSE;
+            deleting = FALSE;
+        }
+        if (outputString.contains("files to consider"))
+        {
+            calculating = FALSE;
+            transferring = TRUE;
+            deleting = FALSE;
+        }
+        if (outputString.contains("deleting"))
+        {
+            calculating = FALSE;
+            transferring = FALSE;
+            deleting = TRUE;
+        }
+      }
+      }
+    if (pipeVssErrFile->open(QIODevice::ReadOnly | QIODevice::Text)){
+            int i=size;
+        QTextStream stream(pipeVssErrFile);
+        stream.setCodec("UTF-8");
+        stream.seek(vssErrPos);
+        outputError="";
+        se=stream.readLine();
+        while(!se.isNull()&&i!=0){
+            outputError=outputError+se+"\n";
+            se=stream.readLine();
+            i--;
+          }
+
+        vssErrPos=stream.pos();
+        pipeVssErrFile->close();
+        if (outputError !="")
+        {
+            errorsFound++;
+            errorCount++;
+            ui.rsyncOutput->append(logFileUpdate("rsync-error", outputError, 0));
+        }
+      }
+    if (doVss == 2 && se.isNull() && s.isNull())
+      {
+        vssTimer->stop();
+        doVss = 0;
+        pipeVssFile->remove();
+        pipeVssErrFile->remove();
+        procFinished();
+
+      }
 }
 
 //updates Now Doing textBrowser ===============================================================================================================
