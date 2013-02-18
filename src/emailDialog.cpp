@@ -4,7 +4,7 @@
 ===============================================================================================================================
 ===============================================================================================================================
      This file is part of "luckyBackup" project
-     Copyright 2008-2012, Loukas Avgeriou
+     Copyright, Loukas Avgeriou
      luckyBackup is distributed under the terms of the GNU General Public License
      luckyBackup is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  project version    : Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 18 Jan 2012
+ last modified      : 13 Jan 2013
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -96,9 +96,11 @@ void emailDialog::revertDefault(const int field)
       switch (field)
     {
         //command
-        case 0:    
-          if(WINrunning) uiE.lineEdit_command        -> setText(emailDefaultWinCommand);
-          else uiE.lineEdit_command        -> setText(emailDefaultCommand);
+        case 0:
+            if (WINrunning)
+                uiE.lineEdit_command        -> setText(emailDefaultWinCommand);
+            else
+                uiE.lineEdit_command        -> setText(emailDefaultCommand);
             break;
         //subject
         case 1:
@@ -152,32 +154,43 @@ void emailDialog::fillVariables()
     emailFrom       = uiE.lineEdit_arg_from -> text();
     emailTo         = uiE.lineEdit_arg_to -> text();
     emailSubject    = uiE.lineEdit_arg_subject -> text();
-    QStringList smtpSrv = (uiE.lineEdit_arg_smtp -> text()).split(":");
-    emailSMTP       = smtpSrv.first();
-    QString smtpPort = "25";
-    if (smtpSrv.length()>1)
-        smtpPort=smtpSrv.at(1);
-    QString smtpUser = uiE.lineEdit_arg_smtp_user->text();
-    QString smtpPass = uiE.lineEdit_arg_smtp_pass->text();
+    if (WINrunning)
+    {
+        QStringList smtpSrv = (uiE.lineEdit_arg_smtp -> text()).split(":");
+        emailSMTP       = smtpSrv.first();
+        QString smtpPort = "25";
+        if (smtpSrv.length()>1)
+            smtpPort=smtpSrv.at(1);
+        //QString smtpUser = uiE.lineEdit_arg_smtp_user->text();    // security issues ?
+        //QString smtpPass = uiE.lineEdit_arg_smtp_pass->text();    // security issues ?
+    }
+    else
+        emailSMTP       = uiE.lineEdit_arg_smtp -> text();
     emailBody       = uiE.textBrowser_arg_body -> toPlainText();
     emailNever      = uiE.checkBox_conditionNever -> isChecked();
     emailError      = uiE.checkBox_conditionError -> isChecked();
     emailSchedule   = uiE.checkBox_conditionSchedule -> isChecked();
-    // Execute the email command
-    QProcess *emailProcess;                         emailProcess = new QProcess;
-    emailProcess -> setProcessChannelMode(QProcess::MergedChannels);
-    QDir::setCurrent(luckyBackupDir);
-    emailProcess -> setWorkingDirectory(luckyBackupDir);
-    QStringList args;
-    if (!smtpUser.isEmpty() && !smtpPass.isEmpty())
+    
+// Windows TESTING purposes for Juan TESTING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*  if (WINrunning)
     {
-        args << "-install" << emailSMTP << emailFrom <<"2" << smtpPort <<"-" << smtpUser << smtpPass;
-        emailProcess -> start ("blat.exe",args);
-        emailProcess -> waitForFinished(10000);
-    }
+        // Execute the email command
+        QProcess *emailProcess;                         emailProcess = new QProcess;
+        emailProcess -> setProcessChannelMode(QProcess::MergedChannels);
+        QDir::setCurrent(luckyBackupDir);
+        emailProcess -> setWorkingDirectory(luckyBackupDir);
+        QStringList args;
+        if (!smtpUser.isEmpty() && !smtpPass.isEmpty())
+        {
+            args << "-install" << emailSMTP << emailFrom <<"2" << smtpPort <<"-" << smtpUser << smtpPass;
+            emailProcess -> start ("blat.exe",args);
+            emailProcess -> waitForFinished(10000);
+        }
 
-    // Build the return string ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //QString errorOccured = emailProcess -> errorString();
+        // Build the return string ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //QString errorOccured = emailProcess -> errorString();
+    }*/
+    // WINDOWS TESTING END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
 // emailTest

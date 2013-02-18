@@ -4,7 +4,7 @@
 ===============================================================================================================================
 ===============================================================================================================================
      This file is part of "luckyBackup" project
-     Copyright 2008-2012, Loukas Avgeriou
+     Copyright, Loukas Avgeriou
      luckyBackup is distributed under the terms of the GNU General Public License
      luckyBackup is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  project version	: Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 30 Oct 2012
+ last modified      : 13 Jan 2013
 ===============================================================================================================================
 ===============================================================================================================================
 */

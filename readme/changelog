@@ -1,4 +1,18 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 0.4.8 :
+* Added vss support (windows)
+* Added support for nt-streams (windows)
+* Added support for e-mail notifications (windows)
+* Added various libs used for the windows port
+* Minor modifications to "modify task" dialog
+* View of remote places is now available through the "manage backup" dialog
+* Default email options are now loaded when a new profile is created
+* Safety checks of mount-points now include deeper levels in paths than /media/<1st-level>/ and /mnt/<1st-level>/
+* Fixed issue: Segmentation fault under certain circumstances, when --skip-critical is used as an argument and there exists one or more actual CRITICAL tasks.
+* Fixed issue: Confusion at task list when an item's box state changed.
+* Fixed issue (windows): Warning message regarding the changes.log files during a run
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Version 0.4.7 :
 * Introduced compatibility for the windows port
 * Improved OS2 compatibility for snapshots
@@ -14,7 +28,7 @@ Version 0.4.7 :
 * Changed the global settings file from Qvariant to simple text
 * Changed the schedule file from Qvariant to simple text
 * Changed the profile import/export feature so that logs and snapshot data are included too
-* Fixed issue: email fetaure sent the oldest logfile instead of the newest one
+* Fixed issue: email feature sent the oldest logfile instead of the newest one
 * Fixed issue: email feature reported "process timeout"
 * Fixed various issues when spaces are used at a remote path
 * Fixed issue: Creation of the snapshot directory at a remote destination when the max No. of snapshots was not reached

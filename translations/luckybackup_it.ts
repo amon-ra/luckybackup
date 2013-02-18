@@ -42,12 +42,12 @@
     <message>
         <location line="+6"/>
         <source>Sync dir B data that also exists at sync dir A and is different</source>
-        <translation type="unfinished"/>
+        <translation>I dati della cartella di sincronizzazione B che esistono anche nella cartella di sincronizzazione A e sono diversi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Snapshot data that also exists at the source and is different</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;istantanea dei dati che esiste nella sorgente ed è diversa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -585,12 +585,12 @@
     <message>
         <location line="+5"/>
         <source>The indifex team</source>
-        <translation type="unfinished"/>
+        <translation>Il team indifex</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>for developing the wonderful transifex localization platform and providing it for free</source>
-        <translation type="unfinished"/>
+        <translation>per sviluppare la meravigliosa piattaforma di localizzazione trasifex e fornirla gratuitamente</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1345,7 +1345,7 @@ This means &quot;use the default value for this field&quot;</extracomment>
     <message>
         <location filename="../ui/helpBrowser.ui" line="+14"/>
         <source>luckyBackup - help</source>
-        <translation>luckyBackyp - aiuto</translation>
+        <translation>luckyBackup - aiuto</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1846,13 +1846,13 @@ p, li { white-space: pre-wrap; }
         <location line="+83"/>
         <source>loading default profile ...</source>
         <comment>information window message</comment>
-        <translation>caricamento in corso del profilo di default...</translation>
+        <translation>caricamento del profilo di default in corso ...</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>loading profile ...</source>
         <comment>information window message</comment>
-        <translation>caricamento del profilo...</translation>
+        <translation>caricamento del profilo ...</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2607,7 +2607,7 @@ Full phrase: Removing old snapshots and logfiles of task: &lt;TASKNAME&gt;</comm
         <location line="+1"/>
         <source>E&amp;mail</source>
         <comment>This is a top 'Profile' menu action</comment>
-        <translation>Email</translation>
+        <translation>email</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2649,7 +2649,7 @@ Full phrase: Removing old snapshots and logfiles of task: &lt;TASKNAME&gt;</comm
         <location line="+1"/>
         <source>&amp;Modify</source>
         <comment>This is a top 'Task' menu action</comment>
-        <translation>Modificap</translation>
+        <translation>Modifica</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3295,7 +3295,7 @@ Please leave tags &lt;b&gt;&lt;/b&gt; intact and surrounding 'start translated'<
         <location line="+4"/>
         <source>Deleting file that lists snapshot changes</source>
         <comment>info message displayed during ...file deletion</comment>
-        <translation type="unfinished"/>
+        <translation>Eliminare un file che mostra cambiamenti nell&apos;istantanea</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3336,17 +3336,17 @@ Please leave tags &lt;b&gt;&lt;/b&gt; intact and surrounding 'start translated'<
     <message>
         <location filename="../ui/manageWizard.ui" line="-150"/>
         <source>Check this, to clone the backup snapshot to the restore directory.</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona questa opzione per duplicare l&apos;istantanea di backup nella cartella di ripristino.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Delete existing data that do not exist at the backup</source>
-        <translation type="unfinished"/>
+        <translation>Elimina i dati esistenti che non sono presenti nella copia di backup.</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Browse locally for a new restore path</source>
-        <translation type="unfinished"/>
+        <translation>Esplora localmente per un nuovo percorso di riprisitno</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3466,12 +3466,15 @@ p, li { white-space: pre-wrap; }
 rather than using user and group names
 and mapping them at both ends.
 (--numeric-ids)</source>
-        <translation type="unfinished"/>
+        <translation>Con questa opzione rsync trasferirà il gruppo numerico e gli ID utente⏎
+invece di utilizzare i nomi utente e di gruppo⏎
+ed associarli ad entrambe le terminazioni finali.⏎
+(--numeric-ids)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Use numeric group and user IDs</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza il gruppo numerico e gli ID utente</translation>
     </message>
     <message utf8="true">
         <location line="+22"/>
@@ -3482,12 +3485,18 @@ preserving users via the --owner option
 preserving all groups (not just the current user’s groups) via the --groups option
 and copying devices via the --devices option.
 (--super)</source>
-        <translation type="unfinished"/>
+        <translation>Questo dice al ricevente di tentare di svolgere le attività da super-user⏎
+anche se il ricevente rsync non è stato avviato dal super-user.⏎
+Queste attività includono:⏎
+mantenere gli utenti tramite l&apos;opzione --owner⏎
+mantenere tutti i gruppi (non solo il gruppo dell&apos;utente corrente) tramite l&apos;opzione --groups⏎
+e copiare i dispositivi tramite l&apos;opzione --devices.⏎
+(--super)</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Attempt super-user activities</source>
-        <translation type="unfinished"/>
+        <translation>Tenta le attività da super-user</translation>
     </message>
     <message>
         <location line="+531"/>
@@ -3504,7 +3513,8 @@ and copying devices via the --devices option.
         <location line="+359"/>
         <source>Check this to clone source to destination
 Leave unchecked to create an extra directory inside destination</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona questa opzione per duplicare la cartella sorgente in quella di destinazione⏎
+Lascia deselezionata questa opzione per creare una cartella aggiuntiva all&apos;interno di quella di destinazione</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3669,7 +3679,9 @@ trailing / - corrisponde solo alla cartelle, sono esclusi file, link simbolici e
         <source>Define the type of this task:
 1. Backup the Source directory, inside Destination (see also &quot;Do NOT create directory&quot; box)
 2. Synchronize Source &amp; Destination, keeping the most recent files at both of them</source>
-        <translation type="unfinished"/>
+        <translation>Definisci il tipo di attività:⏎
+1. Duplica la cartella Sorgente, dentro alla Destinazione (vedi anche l&apos;opzione &quot;NON creare una cartella&quot;)⏎
+2. Sincronizza Sorgente &amp; Destinazione, mantenendo i file più recenti all&apos;interno di entrambe</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3700,7 +3712,7 @@ trailing / - corrisponde solo alla cartelle, sono esclusi file, link simbolici e
         <location line="+77"/>
         <location line="+371"/>
         <source>launch the pattern editor</source>
-        <translation type="unfinished"/>
+        <translation>avvia l&apos;editor dei pattern</translation>
     </message>
     <message>
         <location line="-242"/>
@@ -3775,7 +3787,9 @@ trailing / - corrisponde solo alla cartelle, sono esclusi file, link simbolici e
         <source>Include ONLY this list of patterns. Nothing more.
 Please refer to the manual for better understanding of include rules.
 This will disable the exclude feature.</source>
-        <translation type="unfinished"/>
+        <translation>Includi SOLO questa lista di pattern. Nulla di più.⏎
+Per favore fai riferimento al manuale per comprendere meglio le regole di inclusione.⏎
+Questo disabiliterà l&apos;opzione di esclusione.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3961,7 +3975,9 @@ Se non sai cosa significhi, non modificare nulla!!</translation>
         <source>Delete files on the destination that don't exist on the source
 . &quot;Recurse into directories&quot; has to be selected 
 (--delete-after &amp; --delete-excluded if &quot;Exclude&quot; is used)</source>
-        <translation type="unfinished"/>
+        <translation>Elimina i file nella cartella di destinazione che non esistono in quella sorgente⏎
+. &quot;Ricorri nelle cartelle&quot; deve essere selezionato ⏎
+(--delete-after &amp; --delete-excluded se &quot;Escludi&quot; è utilizzato)</translation>
     </message>
     <message>
         <location line="+152"/>
@@ -4140,7 +4156,10 @@ ATTENZIONE: Tutti i file devono essere inclusi nel gruppo di trasferimento!!
 Normally used when &quot;Execute Before&quot; commands can fix a warning (eg mount partitions)
 
 ATTENTION: check this if you really know what you&apos;re doing</source>
-        <translation type="unfinished"/>
+        <translation>Esegui l&apos;attività anche se questa appare con un messaggio di ATTENZIONE⏎
+Normalmente usato quando i comandi &quot;Esegui Prima&quot; possono correggere un messaggio di avviso (per esempio montare delle partizioni)⏎
+⏎
+ATTENZIONE: seleziona questo se sei sicuro di sapere che cosa stai facendo</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4192,19 +4211,19 @@ ATTENTION: check this if you really know what you&apos;re doing</source>
         <location line="+6"/>
         <source>Select file to read include patterns</source>
         <comment>file selection dialog title</comment>
-        <translation type="unfinished"/>
+        <translation>Seleziona un file da leggere per l&apos;inclusione dei pattern</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Select file to read exclude patterns</source>
         <comment>file selection dialog title</comment>
-        <translation type="unfinished"/>
+        <translation>Seleziona un file da leggere per l&apos;esclusione dei pattern</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Please define the source before launching the pattern editor</source>
         <comment>message box, message</comment>
-        <translation type="unfinished"/>
+        <translation>Per favore definisci la sorgente prima di avviare l&apos;editor di pattern</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -4238,38 +4257,38 @@ ATTENTION: check this if you really know what you&apos;re doing</source>
     <message>
         <location line="-300"/>
         <source>Leave the box checked, to &lt;b&gt;STOP&lt;/b&gt; the execution of running task if this command exits with an error</source>
-        <translation type="unfinished"/>
+        <translation>Lascia la casella contrassegnata, per &lt;b&gt;FERMARE&lt;/b&gt; l&apos;esecuzione dell&apos;attività in corso se questo comando restituisce un errore</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>use boxes to &lt;b&gt;STOP&lt;/b&gt; task execution on error</source>
         <comment>Please leave the bold tags &lt;b&gt;&lt;/b&gt; intact and surrounding the word STOP translated</comment>
-        <translation type="unfinished"/>
+        <translation>utilizza i riquadri per &lt;b&gt;FERMARE&lt;/b&gt; l&apos;esecuzione dell&apos;attività in caso di errore</translation>
     </message>
     <message>
         <location line="+298"/>
         <source>You have declared the &apos;/&apos; (root) directory as source and have NOT checked the &apos;Do NOT create extra directory&apos; box</source>
         <comment>message box message - line1</comment>
-        <translation type="unfinished"/>
+        <translation>Hai dichiarato la ca</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+10"/>
         <source>Please check the relevant box before proceeding</source>
         <comment>message box message - line3</comment>
-        <translation type="unfinished"/>
+        <translation>Per favore seleziona la casella appropriata prima di procedere</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>You have declared the root directory of an entire partition as source and have NOT checked the &apos;Do NOT create extra directory&apos; box</source>
         <comment>message box message - line1</comment>
-        <translation type="unfinished"/>
+        <translation>Hai dichiarato la cartella root di un&apos;intera partizione come sorgente e NON hai selezionato la caselle &quot;NON creare una cartella extra&quot;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>That is not allowed because the root partition does not have an actual name</source>
         <comment>message box message - line2</comment>
-        <translation type="unfinished"/>
+        <translation>Questo non è permesso poiché la partizione root non ha attualmente un nome</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4311,19 +4330,19 @@ ATTENTION: check this if you really know what you&apos;re doing</source>
         <location line="+2"/>
         <source>&lt;b&gt;Do not forget&lt;/b&gt; to define a directory at the &apos;exclude&apos; groupbox that will contain the destination</source>
         <comment>message box message - line2. Please leave tag &lt;b&gt;,&lt;/b&gt; intact and surrounding 'do not forget' translated</comment>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Non dimenticare&lt;/b&gt; di definire una cartella nel gruppo &quot;escludi&quot; che conterrà la destinazione</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>You have checked the &apos;delete files on the destination&apos; option</source>
         <comment>message box message - line2</comment>
-        <translation type="unfinished"/>
+        <translation>Hai selezionato l&apos;opzione &quot;elimina i file nella cartella di destinazione&quot;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>without having checked &apos;Recurse into directories&apos; which is required</source>
         <comment>message box message - line3</comment>
-        <translation type="unfinished"/>
+        <translation>senza avere selezionato &quot;Ricorri nelle directory&quot;, che è richiesto</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4418,7 +4437,7 @@ ATTENTION: check this if you really know what you&apos;re doing</source>
     <message>
         <location filename="../ui/modifyDialog.ui" line="-1943"/>
         <source>Read exclude patterns from file</source>
-        <translation type="unfinished"/>
+        <translation>Leggi i pattern da escludere in un file</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4452,12 +4471,12 @@ ATTENTION: check this if you really know what you&apos;re doing</source>
     <message>
         <location line="+3"/>
         <source>Add any directory, file or pattern to be included by this task</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi una cartella, un file o un pattern da includere in questa attività</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Include mode</source>
-        <translation type="unfinished"/>
+        <translation>Modalità di inclusione</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4468,31 +4487,34 @@ ATTENTION: check this if you really know what you&apos;re doing</source>
         <location line="+22"/>
         <source>Do not exclude this list of patterns.
 Please refer to the manual for better understanding of include rules.</source>
-        <translation type="unfinished"/>
+        <translation>Non escludere questa lista di pattern.⏎
+Per favore consulta il manuale per comprendere meglio le regole di inclusione.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Normal Include</source>
-        <translation type="unfinished"/>
+        <translation>Inclusione Normale</translation>
     </message>
     <message>
         <location line="+219"/>
         <source>Read include patterns from file</source>
-        <translation type="unfinished"/>
+        <translation>Leggi i pattern da includere in un file</translation>
     </message>
     <message>
         <location line="+303"/>
         <location line="+149"/>
         <location line="+891"/>
         <source>browse locally</source>
-        <translation type="unfinished"/>
+        <translation>cerca localmente</translation>
     </message>
     <message>
         <location line="-393"/>
         <source>Check this is you use a FAT/NTFS partition as destination.
 Data ownership and permissions will NOT be preserved.
 (-t --modify-window=1)</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona questa opzione per utilizzare una partizione FAT/NTFS come destinazione⏎
+Il proprietario ed i permessi dei dati NON saranno mantenuti.⏎
+(-t --modify-window=1)</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4503,7 +4525,7 @@ Data ownership and permissions will NOT be preserved.
         <location line="+914"/>
         <location line="+22"/>
         <source>Set the total number of backup snapshots to keep</source>
-        <translation type="unfinished"/>
+        <translation>Imposta il numero totale di istantanee di backup da mantenere</translation>
     </message>
     <message>
         <location line="-19"/>
@@ -4528,7 +4550,7 @@ Data ownership and permissions will NOT be preserved.
     <message>
         <location line="+9"/>
         <source>Please choose a file within the source</source>
-        <translation type="unfinished"/>
+        <translation>Per favore seleziona un file all&apos;interno della cartella sorgente</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -4538,7 +4560,7 @@ Data ownership and permissions will NOT be preserved.
     <message>
         <location line="+15"/>
         <source>Please choose a directory within the source</source>
-        <translation type="unfinished"/>
+        <translation>Per favore scegli una cartella all&apos;interno della sorgente</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -4548,29 +4570,31 @@ Data ownership and permissions will NOT be preserved.
     <message>
         <location filename="../ui/patternEditor.ui" line="+23"/>
         <source>pattern editor</source>
-        <translation type="unfinished"/>
+        <translation>editor dei pattern</translation>
     </message>
     <message>
         <location line="+100"/>
         <source>Check this to use the directory above as an absolute path
 if unchecked, the pattern will match any file/directory that meets the &quot;name&quot; criteria</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona questo per utilizzare la cartella sopra come un percorso assoluto⏎
+se deselezionato, il pattern assocerà qualsiasi file/cartella che segue il criterio &quot;nome&quot;</translation>
     </message>
     <message>
         <location line="+171"/>
         <source>Define here, what would you like the pattern to refer to</source>
-        <translation type="unfinished"/>
+        <translation>Scrivi qui a che cosa il pattern si dovrebbe riferire</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The pattern refers to a:</source>
-        <translation type="unfinished"/>
+        <translation>Il pattern si riferisce a:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Use this if the pattern refers to a specific file
 eg &quot;/media/music/album/song.mp3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza questo se il pattern si riferisce ad un file specifico⏎
+eg &quot;/media/music/album/song.mp3&quot;</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4581,7 +4605,8 @@ eg &quot;/media/music/album/song.mp3&quot;</source>
         <location line="+10"/>
         <source>Use this if the pattern refers to a specific directory
 eg &quot;/media/music/Album/&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza questo se il pattern si riferisce ad una cartella specifica⏎
+eg &quot;/media/music/Album/&quot;</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4592,23 +4617,25 @@ eg &quot;/media/music/Album/&quot;</source>
         <location line="+13"/>
         <source>Use this if the pattern refers to a set of files that have something in common
 eg all the files with a &quot;.txt&quot; extension</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza questo se il pattern si riferisce ad una lista di file che hanno qualcosa in comune⏎
+per esempio tutti i file con l&apos;estensione &quot;.txt&quot;</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set of files</source>
-        <translation type="unfinished"/>
+        <translation>Set di file</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Use this if the pattern refers to a set of directories that have something in common
 eg all the directories that are named as &quot;temp&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza questo se il pattern si riferisce ad una serie di cartella che hanno qualcosa in comune⏎
+per esempio tutte le cartelle che sono chiamate &quot;temp&quot;</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set of directories</source>
-        <translation type="unfinished"/>
+        <translation>Set di directory</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -4623,7 +4650,7 @@ eg all the directories that are named as &quot;temp&quot;</source>
     <message>
         <location line="+10"/>
         <source>Enter here the starting characters of the name of the files/directories that the pattern refers to</source>
-        <translation type="unfinished"/>
+        <translation>Digita qui i caratteri iniziali del nome dei files/delle cartelle ai quali i pattern si riferisce</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4635,12 +4662,14 @@ eg all the directories that are named as &quot;temp&quot;</source>
         <source>Enter here the ending characters of the name of the files/directories that the pattern refers to
 eg to refer to all &quot;.txt&quot; files, enter
 .txt</source>
-        <translation type="unfinished"/>
+        <translation>Digita qui i caratteri finali del nome dei file/delle cartelle ai quali il pattern si deve riferire⏎
+per esempio per riferirsi a tutti i file &quot;.txt&quot;, digita ⏎
+.txt</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Enter here the name of the files/directories that the pattern refers to</source>
-        <translation type="unfinished"/>
+        <translation>Digita qui il nome dei file/delle cartelle ai quali il pattern si deve riferire</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4650,7 +4679,7 @@ eg to refer to all &quot;.txt&quot; files, enter
     <message>
         <location line="+10"/>
         <source>Enter here the characters contained in any position of the name of the files/directories that the pattern refers to</source>
-        <translation type="unfinished"/>
+        <translation>Digita qui i caratteri contenuti in una qualunque posizione del nome dei file/delle cartelle ai quali il pattern si riferisce</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4660,52 +4689,52 @@ eg to refer to all &quot;.txt&quot; files, enter
     <message>
         <location line="-392"/>
         <source>browse localy for a file</source>
-        <translation type="unfinished"/>
+        <translation>cerca localmente un file</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>browse localy for a directory path</source>
-        <translation type="unfinished"/>
+        <translation>sfoglia localmente il percorso di cartelle</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>use absolute path</source>
-        <translation type="unfinished"/>
+        <translation>usa percorso assoluto</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Go deeper in path by :</source>
-        <translation type="unfinished"/>
+        <translation>Vai in profondità nel percorso di:</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Go deeper in path by any level</source>
-        <translation type="unfinished"/>
+        <translation>Vai in profondità nel percorso in qualunque livello</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>any</source>
-        <translation type="unfinished"/>
+        <translation>qualunque</translation>
     </message>
     <message>
         <location line="+198"/>
         <source>Define here the name criteria for the files/directories to be matched</source>
-        <translation type="unfinished"/>
+        <translation>Definisci qui il criterio per i nomi da applicare ai file/alle cartelle</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>final pattern</source>
-        <translation type="unfinished"/>
+        <translation>pattern finale</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>The actual pattern is displayed here</source>
-        <translation type="unfinished"/>
+        <translation>Il pattern attuale è mostrato qui</translation>
     </message>
     <message>
         <location line="-288"/>
         <source>Reset the pattern editor fields to the default values</source>
-        <translation type="unfinished"/>
+        <translation>Ripristina i campi dell&apos;editor di pattern ai valori predefiniti</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4736,18 +4765,29 @@ The directory &quot;/media/music&quot; includes 3 sub-directories:
 * Directory contents
 * path:/media/music/
 * Go deeper in path by &quot;1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza questo per richiamare sotto-cartelle più interne⏎
+per esempio⏎
+La cartella &quot;/media/music&quot; include 3 sotto-cartelle:⏎
+1.Rock⏎
+2.Jazz⏎
+3.Colonne Sonore⏎
+ e ti piacerebbe considerare tutto il contenuto di queste 3 cartelle, definisci ciò che segue:⏎
+* Serie di cartelle⏎
+* Contenuto della cartella⏎
+* percorso:/media/music/⏎
+* Vai ancora più all&apos;interno della cartella &quot;1&quot;</translation>
     </message>
     <message>
         <location line="+207"/>
         <source>Use this if the pattern refers to the contents of a directory (or a set of directories), not the directory itself
 eg the contents of the directory &quot;/media/music/Album/&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza questo se il pattern si riferisce al contenuto di una cartella (o di una lista di cartelle), non alla cartella stessa⏎
+per esempio il contenuto della cartella &quot;/media/music/Album/&quot;</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Directory contents</source>
-        <translation type="unfinished"/>
+        <translation>Contenuto della directory</translation>
     </message>
 </context>
 <context>
@@ -5069,7 +5109,11 @@ eg the contents of the directory &quot;/media/music/Album/&quot;</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#aa0000;&quot;&gt;Profile execution scheduling&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;⏎
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;⏎
+p, li { white-space: pre-wrap; }⏎
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:10pt; font-weight:600; font-style:normal;&quot;&gt;⏎
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#aa0000;&quot;&gt;Programmazione dell&apos;esecuzione del profilo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -5134,7 +5178,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+13"/>
         <source>Delay luckybackup execution at startup</source>
-        <translation type="unfinished"/>
+        <translation>Ritardo dell&apos;esecuzione di luckyBackup dall&apos;avvio</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5382,12 +5426,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="-485"/>
         <source>Check this if your machine does not support a graphical environment (eg server)</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona questo se il tuo pc non supporta un&apos;interfaccia grafica (es. server)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Console Mode</source>
-        <translation type="unfinished"/>
+        <translation>Console Mode</translation>
     </message>
     <message>
         <location line="+516"/>
@@ -5414,7 +5458,7 @@ p, li { white-space: pre-wrap; }
         <location line="+78"/>
         <source>The existent schedule file is not a valid luckyBackup v.</source>
         <comment>v is for version</comment>
-        <translation type="unfinished"/>
+        <translation>Il file di pianificazione esistente non è un file luckyBackup v. valido</translation>
     </message>
     <message>
         <location line="-77"/>
@@ -5426,38 +5470,38 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+78"/>
         <source>You have made changes without clicking the cronIT button</source>
-        <translation type="unfinished"/>
+        <translation>Hai effettuato dei cambiamenti senza premere il tasto cronIT</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to close the schedule dialog ?</source>
-        <translation type="unfinished"/>
+        <translation>Sei sicuro di volere chiudere la finestra di pianificazione?</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Your crontab is updated successfully</source>
-        <translation type="unfinished"/>
+        <translation>La tua crontab è stata aggiornata con successo</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>no crontab entries exist</source>
-        <translation type="unfinished"/>
+        <translation>non esiste alcuna voce nella crontab</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>crontab content</source>
-        <translation type="unfinished"/>
+        <translation>contenuto del crontab</translation>
     </message>
     <message>
         <location line="+156"/>
         <source>once, at system startup</source>
         <comment>full phrase: Execute profile xxxxx, once at system startup</comment>
-        <translation type="unfinished"/>
+        <translation>una volta, all&apos;avvio del sistema</translation>
     </message>
     <message>
         <location filename="../ui/scheduleDialog.ui" line="-463"/>
         <source>Run once, at startup</source>
-        <translation type="unfinished"/>
+        <translation>Esegui una volta, all&apos;avvio</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5477,12 +5521,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+20"/>
         <source>Display the current crontab</source>
-        <translation type="unfinished"/>
+        <translation>Mostra il crontab corrente</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>view current crontab</source>
-        <translation type="unfinished"/>
+        <translation>vedi il crontab corrente</translation>
     </message>
 </context>
 <context>
@@ -5525,22 +5569,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+7"/>
         <source>Do not show this again for this task</source>
-        <translation type="unfinished"/>
+        <translation>Non mostrare di nuovo per questo task</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>You have selected to &quot;Backup the contents of the source directory&quot;&lt;br&gt;together with the &quot;delete files on the destination&quot; option</source>
-        <translation type="unfinished"/>
+        <translation>Hai selezionato l&apos;opzione &quot;Copia il contenuto della cartella sorgente&quot;&lt;br&gt;insieme all&apos;opzione &quot;elimina i file nella cartella di destinazione&quot;</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>BEWARE, if your intention is NOT to clone source to destination !!</source>
-        <translation type="unfinished"/>
+        <translation>STAI ATTENTO, se la tua intenzione NON è quella di duplicare il sorgente nella destinazione !!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you wish to proceed ??</source>
-        <translation type="unfinished"/>
+        <translation>Sei sicuro di volere procedere ??</translation>
     </message>
     <message>
         <location filename="../ui/textDialog.ui" line="+17"/>
@@ -5560,12 +5604,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/textDialog.cpp" line="+8"/>
         <source>Copy command to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia il comando negli appunti</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>eMail information</source>
-        <translation type="unfinished"/>
+        <translation>email di informazioni</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -5588,7 +5632,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+28"/>
         <source>declaration of paths</source>
-        <translation type="unfinished"/>
+        <translation>dichiarazione dei percorsi</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -5598,13 +5642,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+19"/>
         <source>Enter the full path of the rsync command</source>
-        <translation type="unfinished"/>
+        <translation>Inserisci il percorso completo del comando rsync</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+64"/>
         <source>browse locally</source>
-        <translation type="unfinished"/>
+        <translation>cerca localmente</translation>
     </message>
     <message>
         <location line="-47"/>
@@ -5620,7 +5664,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location line="+19"/>
         <source>Enter the full path of the ssh command</source>
-        <translation type="unfinished"/>
+        <translation>Inserisci il percorso completo del comando ssh</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -5636,7 +5680,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/winDialog.cpp" line="+102"/>
         <source>Select rsync command</source>
         <comment>file selection dialog title</comment>
-        <translation type="unfinished"/>
+        <translation>Seleziona il comando rsync</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5648,7 +5692,7 @@ p, li { white-space: pre-wrap; }
         <location line="-1"/>
         <source>Select ssh command</source>
         <comment>file selection dialog title</comment>
-        <translation type="unfinished"/>
+        <translation>Seleziona il comando ssh</translation>
     </message>
 </context>
 </TS>

@@ -1,19 +1,22 @@
 /****************************************************************************
-**
-** Copyright (C) VCreate Logic Private Limited, Bangalore
-**
-** Use of this file is limited according to the terms specified by
-** VCreate Logic Private Limited, Bangalore.  Details of those terms
-** are listed in licence.txt included as part of the distribution package
-** of this file. This file may not be distributed without including the
-** licence.txt file.
-**
-** Contact info@vcreatelogic.com if any conditions of this licensing are
-** not clear to you.
-**
-** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
-** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-**
+    Copyright (C) VCreate Logic Private Limited, Bangalore
+    Contact: info@vcreatelogic.com
+    
+    This file is developed by VCreate Logic Private Limited and used as part of the "luckyBackup" project
+    It is distributed under the terms of the GNU General Public License
+    It is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    It is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with the luckyBackup project.  If not, see <http://www.gnu.org/licenses/>.
+
 ****************************************************************************/
 
 #ifndef Rsync_DIR_MODEL_P_H

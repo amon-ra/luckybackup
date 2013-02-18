@@ -209,7 +209,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the full path of the rsync command</string>
+        <string>Enter the full path of the cygpath command</string>
        </property>
       </widget>
      </item>
@@ -273,7 +273,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the full path of the rsync command</string>
+        <string>Enter the full path of the dosdev command</string>
        </property>
       </widget>
      </item>
@@ -337,7 +337,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the full path of the rsync command</string>
+        <string>Enter the full path of the luckybackup directory</string>
        </property>
       </widget>
      </item>
@@ -401,7 +401,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the full path of the rsync command</string>
+        <string>Enter the full path of the vshadow directory</string>
        </property>
       </widget>
      </item>
@@ -465,7 +465,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the full path of the rsync command</string>
+        <string>Enter the full path of the temporary directory</string>
        </property>
       </widget>
      </item>
@@ -561,8 +561,6 @@
     </layout>
    </item>
   </layout>
-  <zorder></zorder>
-  <zorder></zorder>
  </widget>
  <tabstops>
   <tabstop>lineEdit_rsyncPath</tabstop>

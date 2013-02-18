@@ -4,7 +4,7 @@ Display a dialog. Adds a new or modifies an existing operation
 ===============================================================================================================================
 ===============================================================================================================================
      This file is part of "luckyBackup" project
-     Copyright 2008-2012, Loukas Avgeriou
+     Copyright, Loukas Avgeriou
      luckyBackup is distributed under the terms of the GNU General Public License
      luckyBackup is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ Display a dialog. Adds a new or modifies an existing operation
  project version    : Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 27 Nov 2012
+ last modified      : 13 Jan 2013
 
 ===============================================================================================================================
 ===============================================================================================================================
@@ -55,8 +55,12 @@ modifyDialog::modifyDialog (int ItemNo, QDialog *parent) : QDialog (parent)
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Various gui initialization
     //uiM.toolBox_options         ->setItemEnabled (0,FALSE);    // different backend
+    if (!WINrunning)
+    {
+        uiM.checkBox_vss        -> setVisible(FALSE);
+        uiM.checkBox_restorent  -> setVisible(FALSE);
+    }     
     
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     //connections ----------------------------------------------------------------------------------------------------
@@ -209,20 +213,6 @@ modifyDialog::modifyDialog (int ItemNo, QDialog *parent) : QDialog (parent)
     uiM.lineEdit_executeAfterAdd    -> setCompleter(completer);
     uiM.lineEdit_excludeFile        -> setCompleter(completer);
     uiM.lineEdit_includeFile        -> setCompleter(completer);
-
-    //default value
-    if (uiM.lineEdit_sshPassword -> text() == "" )
-      uiM.lineEdit_sshPassword -> setText(luckyBackupDir+"id_rsa");
-    if (WINrunning)
-      {
-        uiM.checkBox_restorent->setDisabled(false);
-        uiM.checkBox_vss->setDisabled(false);
-      }
-    else{
-        uiM.checkBox_restorent->setDisabled(true);
-        uiM.checkBox_vss->setDisabled(true);
-      }
-
 }
 //===================================================================================================================================================
 //------------------------------------------------------------------SLOTS----------------------------------------------------------------------------
@@ -1346,15 +1336,6 @@ operation *modifyDialog::fillOperationArray()
     pTask -> SetOptionsOwnership    ( uiM.checkBox_ownership -> isChecked() );
     pTask -> SetOptionsSymlinks     ( uiM.checkBox_symlinks -> isChecked() );
     pTask -> SetOptionsPermissions  ( uiM.checkBox_permissions -> isChecked() );
-    pTask -> SetOptionsRestorent    ( uiM.checkBox_restorent -> isChecked() );
-    pTask -> SetOptionsVss          ( uiM.checkBox_vss -> isChecked() );
-    pTask -> SetTempPath(tempDirPath);
-    pTask -> SetLuckyBackupDir           (luckyBackupDir);
-    pTask -> SetVshadowDir          (vshadowDir);
-    pTask -> SetDosdevCommand           (dosdevCommand);
-    pTask -> SetCygpathCommand           (cygpathCommand);
-    pTask -> SetRsyncCommand           (rsyncCommandPath);
-    pTask -> SetSshCommand           (sshCommandPath);
     pTask -> SetOptionsDevices      ( uiM.checkBox_devices -> isChecked() );
     pTask -> SetOptionsCVS          ( uiM.checkBox_cvs -> isChecked() );
     pTask -> SetOptionsHardLinks    ( uiM.checkBox_hardLinks -> isChecked() );
@@ -1363,6 +1344,17 @@ operation *modifyDialog::fillOperationArray()
     pTask -> SetOptionsRecurse      ( uiM.checkBox_recurse -> isChecked() );
     pTask -> SetOptionsSuper        ( uiM.checkBox_super -> isChecked() );
     pTask -> SetOptionsNumericIDs   ( uiM.checkBox_numericIDs -> isChecked() );
+    // windows related rsync options
+    pTask -> SetOptionsRestorent    ( uiM.checkBox_restorent -> isChecked() );
+    pTask -> SetOptionsVss          ( uiM.checkBox_vss -> isChecked() );
+    pTask -> SetTempPath(tempDirPath);
+    pTask -> SetLuckyBackupDir      (luckyBackupDir);
+    pTask -> SetVshadowDir          (vshadowDir);
+    pTask -> SetDosdevCommand       (dosdevCommand);
+    pTask -> SetCygpathCommand      (cygpathCommand);
+    pTask -> SetRsyncCommand        (rsyncCommandPath);
+    pTask -> SetSshCommand          (sshCommandPath);
+    
     count = 0;    //read options list one by one
     while ( count < (uiM.listWidget_options -> count()) )
     {
@@ -1479,14 +1471,16 @@ void modifyDialog::fillModifyWindow(operation *pTask)
     uiM.checkBox_ownership          -> setChecked    (pTask -> GetOptionsOwnership() );
     uiM.checkBox_symlinks           -> setChecked    (pTask -> GetOptionsSymlinks() );
     uiM.checkBox_permissions        -> setChecked    (pTask -> GetOptionsPermissions() );
-    uiM.checkBox_vss                -> setChecked    (pTask -> GetOptionsVss() );
-    uiM.checkBox_restorent          -> setChecked    (pTask -> GetOptionsRestorent() );
     uiM.checkBox_devices            -> setChecked    (pTask -> GetOptionsDevices() );
     uiM.checkBox_cvs                -> setChecked    (pTask -> GetOptionsCVS() );
     uiM.checkBox_hardLinks          -> setChecked    (pTask -> GetOptionsHardLinks() );
     uiM.checkBox_FATntfs            -> setChecked    (pTask -> GetOptionsFATntfs() );
     uiM.checkBox_super              -> setChecked    (pTask -> GetOptionsSuper() );
     uiM.checkBox_numericIDs         -> setChecked    (pTask -> GetOptionsNumericIDs() );
+    
+    uiM.checkBox_vss                -> setChecked    (pTask -> GetOptionsVss() );
+    uiM.checkBox_restorent          -> setChecked    (pTask -> GetOptionsRestorent() );
+    
     count=0;
     while ( count < (pTask -> GetOptionsListSize()) )
     {

@@ -4,7 +4,7 @@ file containing all variables & functions used globaly
 ===============================================================================================================================
 ===============================================================================================================================
     This file is part of "luckyBackup" project
-    Copyright 2008-2012, Loukas Avgeriou
+    Copyright, Loukas Avgeriou
     luckyBackup is distributed under the terms of the GNU General Public License
     luckyBackup is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ file containing all variables & functions used globaly
 project version    : Please see "main.cpp" for project version
 
 developer          : luckyb 
-last modified      : 27 Nov 2012
+last modified      : 15 Jan 2013
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -117,27 +117,25 @@ bool argumentsTest(int ArgsNo, char **arg)
 void declareRsyncCommand()
 {
     if (notXnixRunning)
+    {
+        if (WINrunning)
         {
-            if (WINrunning)
-            {
-                rsyncCommandPath    = rsyncDefaultWinCommand;                                     // This is the default rsync path that windows use
-                sshCommandPath      = sshDefaultWinCommand;                                       // This is the default ssh path that windows use
-            }
-            
-            if (OS2running)
-            {
-                rsyncCommandPath    = rsyncDefaultCommand;                                     // This is the default rsync path that OS2 use
-                sshCommandPath      = sshDefaultCommand;                                       // This is the default ssh path that OS2 use
-            }
-            
-
+            rsyncCommandPath    = rsyncDefaultWinCommand;                                     // This is the default rsync path that windows use
+            sshCommandPath      = sshDefaultWinCommand;                                       // This is the default ssh path that windows use
         }
-        else        // normal *nix
+        
+        if (OS2running)
         {
-            rsyncCommandPath    = rsyncDefaultCommand;                                     // This is the default rsync command that *nix use
-            sshCommandPath      = sshDefaultCommand;                                       // This is the default ssh command that *nix use
-            
+            rsyncCommandPath    = rsyncDefaultCommand;                                     // This is the default rsync path that OS2 use
+            sshCommandPath      = sshDefaultCommand;                                       // This is the default ssh path that OS2 use
         }
+    }
+    else        // normal *nix
+    {
+        rsyncCommandPath    = rsyncDefaultCommand;                                     // This is the default rsync command that *nix use
+        sshCommandPath      = sshDefaultCommand;                                       // This is the default ssh command that *nix use
+        
+    }
 }
 
 // loadCurrentProfile===================================================================================================================
@@ -362,8 +360,10 @@ int loadProfile(QString profileToLoad)
     bool IntOk;
     
     // Init email variables in case profile does not contain them
-    if(WINrunning) emailCommand = emailDefaultWinCommand;
-    else emailCommand = emailDefaultCommand;
+    if(WINrunning)
+        emailCommand = emailDefaultWinCommand;
+    else 
+        emailCommand = emailDefaultCommand;
     emailBody = emailDefaultBody;
     emailSubject = emailDefaultSubject;
     emailNever = TRUE;
@@ -477,15 +477,6 @@ int loadProfile(QString profileToLoad)
             if (ProfileLine.startsWith("OptionsOwnership="))		tempOp	-> SetOptionsOwnership(ProfileLine.remove("OptionsOwnership=").toInt(&IntOk,10));
             if (ProfileLine.startsWith("OptionsSymlinks="))		    tempOp	-> SetOptionsSymlinks(ProfileLine.remove("OptionsSymlinks=").toInt(&IntOk,10));
             if (ProfileLine.startsWith("OptionsPermissions=")) 		tempOp	-> SetOptionsPermissions(ProfileLine.remove("OptionsPermissions=").toInt(&IntOk,10));
-            if (ProfileLine.startsWith("OptionsRestorent=")) 		tempOp	-> SetOptionsRestorent(ProfileLine.remove("OptionsRestorent=").toInt(&IntOk,10));
-            if (ProfileLine.startsWith("OptionsVss=")) 		tempOp	-> SetOptionsVss(ProfileLine.remove("OptionsVss=").toInt(&IntOk,10));
-            if (ProfileLine.startsWith("TempPath=")) 		tempOp	-> SetTempPath(ProfileLine.remove("TempPath="));
-            if (ProfileLine.startsWith("LuckyBackupDir=")) 		tempOp	-> SetLuckyBackupDir(ProfileLine.remove("LuckyBackupDir="));
-            if (ProfileLine.startsWith("VshadowDir=")) 		tempOp	-> SetVshadowDir(ProfileLine.remove("VshadowDir="));
-            if (ProfileLine.startsWith("RsyncCommand=")) 		tempOp	-> SetRsyncCommand(ProfileLine.remove("RsyncCommand="));
-            if (ProfileLine.startsWith("SshCommand=")) 		tempOp	-> SetSshCommand(ProfileLine.remove("SshCommand="));
-            if (ProfileLine.startsWith("DosdevCommand=")) 		tempOp	-> SetDosdevCommand(ProfileLine.remove("DosdevCommand="));
-            if (ProfileLine.startsWith("CygpathCommand=")) 		tempOp	-> SetCygpathCommand(ProfileLine.remove("CygpathCommand="));
             if (ProfileLine.startsWith("OptionsDevices="))			tempOp	-> SetOptionsDevices(ProfileLine.remove("OptionsDevices=").toInt(&IntOk,10));
             if (ProfileLine.startsWith("OptionsCVS="))			    tempOp	-> SetOptionsCVS(ProfileLine.remove("OptionsCVS=").toInt(&IntOk,10));
             if (ProfileLine.startsWith("OptionsHardLinks="))		tempOp	-> SetOptionsHardLinks(ProfileLine.remove("OptionsHardLinks=").toInt(&IntOk,10));
@@ -493,6 +484,17 @@ int loadProfile(QString profileToLoad)
             if (ProfileLine.startsWith("OptionsSuper="))            tempOp  -> SetOptionsSuper(ProfileLine.remove("OptionsSuper=").toInt(&IntOk,10));
             if (ProfileLine.startsWith("OptionsNumericIDs="))       tempOp  -> SetOptionsNumericIDs(ProfileLine.remove("OptionsNumericIDs=").toInt(&IntOk,10));
             if (ProfileLine.startsWith("OptionsListItem="))			tempOp	-> AddOptionsListItem(ProfileLine.remove("OptionsListItem="));
+            
+            if (ProfileLine.startsWith("OptionsRestorent="))        tempOp  -> SetOptionsRestorent(ProfileLine.remove("OptionsRestorent=").toInt(&IntOk,10));
+            if (ProfileLine.startsWith("OptionsVss="))              tempOp  -> SetOptionsVss(ProfileLine.remove("OptionsVss=").toInt(&IntOk,10));
+            
+            if (ProfileLine.startsWith("TempPath="))                tempOp  -> SetTempPath(ProfileLine.remove("TempPath="));
+            if (ProfileLine.startsWith("LuckyBackupDir="))          tempOp  -> SetLuckyBackupDir(ProfileLine.remove("LuckyBackupDir="));
+            if (ProfileLine.startsWith("VshadowDir="))              tempOp  -> SetVshadowDir(ProfileLine.remove("VshadowDir="));
+            if (ProfileLine.startsWith("RsyncCommand="))            tempOp  -> SetRsyncCommand(ProfileLine.remove("RsyncCommand="));
+            if (ProfileLine.startsWith("SshCommand="))              tempOp  -> SetSshCommand(ProfileLine.remove("SshCommand="));
+            if (ProfileLine.startsWith("DosdevCommand="))           tempOp  -> SetDosdevCommand(ProfileLine.remove("DosdevCommand="));
+            if (ProfileLine.startsWith("CygpathCommand="))          tempOp  -> SetCygpathCommand(ProfileLine.remove("CygpathCommand="));
             
             if (ProfileLine.startsWith("ExecuteBeforeListItem="))
             {
@@ -554,6 +556,7 @@ int loadProfile(QString profileToLoad)
 
 // loadProfileQV - qvariant =============================================================================================================================
 // loads an existing profile using qvariant then saves this profile as simple text
+// This is kept for compatibility purposes for older versions that use the qvariant and not simple text
 int loadProfileQV(QString profileToLoad)
 {
     int count;
@@ -673,25 +676,19 @@ int loadProfileQV(QString profileToLoad)
             if (vString == "RemoteSSHPassword")	tempOp	-> SetRemoteSSHPassword(v.toString());
             if (vString == "RemoteSSHPort")		tempOp	-> SetRemoteSSHPort(v.toInt());
 
-            if (vString == "OptionsUpdate")		tempOp	-> SetOptionsUpdate(v.toBool());
-            if (vString == "OptionsDelete")		tempOp	-> SetOptionsDelete(v.toBool());
-            if (vString == "OptionsRecurse")	tempOp	-> SetOptionsRecurse(v.toBool());
-            if (vString == "OptionsOwnership")	tempOp	-> SetOptionsOwnership(v.toBool());
-            if (vString == "OptionsSymlinks")	tempOp	-> SetOptionsSymlinks(v.toBool());
-            if (vString == "OptionsPermissions") tempOp	-> SetOptionsPermissions(v.toBool());
-            if (vString == "OptionsRestorent") tempOp	-> SetOptionsRestorent(v.toBool());
-            if (vString == "OptionsVss") tempOp	-> SetOptionsVss(v.toBool());
-            if (vString == "TempPath")		tempOp	-> SetTempPath(v.toString());
-            if (vString == "LuckyBackupDir")		tempOp	-> SetLuckyBackupDir(v.toString());
-            if (vString == "VshadowDir")		tempOp	-> SetVshadowDir(v.toString());
-            if (vString == "RsyncCommand")		tempOp	-> SetRsyncCommand(v.toString());
-            if (vString == "SshCommand")		tempOp	-> SetSshCommand(v.toString());
-            if (vString == "DosdevCommand")		tempOp	-> SetDosdevCommand(v.toString());
-            if (vString == "CygpathCommand")		tempOp	-> SetCygpathCommand(v.toString());
-            if (vString == "OptionsDevices")	tempOp	-> SetOptionsDevices(v.toBool());
-            if (vString == "OptionsCVS")		tempOp	-> SetOptionsCVS(v.toBool());
-            if (vString == "OptionsHardLinks")	tempOp	-> SetOptionsHardLinks(v.toBool());
-            if (vString == "OptionsFATntfs")	tempOp	-> SetOptionsFATntfs(v.toBool());
+            if (vString == "OptionsUpdate")		tempOp  -> SetOptionsUpdate(v.toBool());
+            if (vString == "OptionsDelete")		tempOp  -> SetOptionsDelete(v.toBool());
+            if (vString == "OptionsRecurse")	tempOp  -> SetOptionsRecurse(v.toBool());
+            if (vString == "OptionsOwnership")	tempOp  -> SetOptionsOwnership(v.toBool());
+            if (vString == "OptionsSymlinks")	tempOp  -> SetOptionsSymlinks(v.toBool());
+            if (vString == "OptionsPermissions") tempOp -> SetOptionsPermissions(v.toBool());
+            if (vString == "OptionsDevices")	tempOp  -> SetOptionsDevices(v.toBool());
+            if (vString == "OptionsCVS")		tempOp  -> SetOptionsCVS(v.toBool());
+            if (vString == "OptionsHardLinks")	tempOp  -> SetOptionsHardLinks(v.toBool());
+            if (vString == "OptionsFATntfs")	tempOp  -> SetOptionsFATntfs(v.toBool());
+            if (vString == "OptionsRestorent")  tempOp  -> SetOptionsRestorent(v.toBool());
+            if (vString == "OptionsVss")        tempOp  -> SetOptionsVss(v.toBool());
+
             if (vString == "OptionsListSize")
             {
                 int OptionsListSize = v.toInt();
@@ -892,21 +889,24 @@ bool saveProfile(QString profileToSave)
         out << "OptionsOwnership="          << Operation[currentOperation] -> GetOptionsOwnership() << "\n";
         out << "OptionsSymlinks="           << Operation[currentOperation] -> GetOptionsSymlinks() << "\n";
         out << "OptionsPermissions="        << Operation[currentOperation] -> GetOptionsPermissions() << "\n";
-        out << "OptionsRestorent="        << Operation[currentOperation] -> GetOptionsRestorent() << "\n";
-        out << "OptionsVss="        << Operation[currentOperation] -> GetOptionsVss() << "\n";
-        out << "LuckyBackupDir="         << Operation[currentOperation] -> GetLuckyBackupDir() << "\n";
-        out << "VshadowDir="         << Operation[currentOperation] -> GetVshadowDir() << "\n";
-        out << "RsyncCommand="         << Operation[currentOperation] -> GetRsyncCommand() << "\n";
-        out << "SshCommand="         << Operation[currentOperation] -> GetSshCommand() << "\n";
-        out << "DosdevCommand="         << Operation[currentOperation] -> GetDosdevCommand() << "\n";
-        out << "CygpathCommand="         << Operation[currentOperation] -> GetCygpathCommand() << "\n";
-        out << "TempPath="         << Operation[currentOperation] -> GetTempPath() << "\n";
         out << "OptionsDevices="            << Operation[currentOperation] -> GetOptionsDevices() << "\n";
         out << "OptionsCVS="                << Operation[currentOperation] -> GetOptionsCVS() << "\n";
         out << "OptionsHardLinks="          << Operation[currentOperation] -> GetOptionsHardLinks() << "\n";
         out << "OptionsFATntfs="            << Operation[currentOperation] -> GetOptionsFATntfs() << "\n";
         out << "OptionsSuper="              << Operation[currentOperation] -> GetOptionsSuper() << "\n";
         out << "OptionsNumericIDs="         << Operation[currentOperation] -> GetOptionsNumericIDs() << "\n";
+
+        out << "OptionsRestorent="          << Operation[currentOperation] -> GetOptionsRestorent() << "\n";
+        out << "OptionsVss="                << Operation[currentOperation] -> GetOptionsVss() << "\n";
+        
+        out << "LuckyBackupDir="            << Operation[currentOperation] -> GetLuckyBackupDir() << "\n";
+        out << "VshadowDir="                << Operation[currentOperation] -> GetVshadowDir() << "\n";
+        out << "RsyncCommand="              << Operation[currentOperation] -> GetRsyncCommand() << "\n";
+        out << "SshCommand="                << Operation[currentOperation] -> GetSshCommand() << "\n";
+        out << "DosdevCommand="             << Operation[currentOperation] -> GetDosdevCommand() << "\n";
+        out << "CygpathCommand="            << Operation[currentOperation] -> GetCygpathCommand() << "\n";
+        out << "TempPath="                  << Operation[currentOperation] -> GetTempPath() << "\n";
+        
         count = 0;
         while ( count < (Operation[currentOperation] -> GetOptionsListSize()) )
         {
@@ -964,12 +964,13 @@ bool exportFullProfile(QString ExportPath, QString exportType)
         if ((Operation[currentOperation] -> GetRemoteDestination()) && (Operation[currentOperation] -> GetRemote()))
         {
             exportArgs << "--protect-args";
-            if ( Operation[currentOperation]-> GetRemoteModule() && Operation[currentOperation] -> GetRemotePassword() != "")
+            //if ( Operation[currentOperation] -> GetRemotePassword() != "")
+            if ( (Operation[currentOperation]-> GetRemoteModule()) && (Operation[currentOperation] -> GetRemotePassword() != "") )
                 exportArgs.append("--password-file=" + ( Operation[currentOperation] -> GetRemotePassword()) );
             if ( Operation[currentOperation] -> GetRemoteSSH())
             {
                 if (WINrunning)
-                  {
+                {
                     if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
                         if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
                             exportArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  Operation[currentOperation] -> GetRemoteSSHPassword() +"\" -p " +
@@ -981,7 +982,9 @@ bool exportFullProfile(QString ExportPath, QString exportType)
                             exportArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
                         else
                             exportArgs.append("-e \""+Operation[currentOperation] -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\"");
-                  }else {
+                }
+                else
+                {
                     if ( Operation[currentOperation] -> GetRemoteSSHPassword() != "")
                         if ( Operation[currentOperation] -> GetRemoteSSHPort() != 0)
                             exportArgs.append("-e "+sshCommandPath+" -i " +  Operation[currentOperation] -> GetRemoteSSHPassword() +" -p " +
@@ -993,11 +996,10 @@ bool exportFullProfile(QString ExportPath, QString exportType)
                             exportArgs.append("-e "+sshCommandPath+" -p " + countStr.setNum( Operation[currentOperation] -> GetRemoteSSHPort()) );
                         else
                             exportArgs.append("-e "+sshCommandPath);
-                  }
-
+                }
             }
         }
-    }    
+    }
     
     exportArgs.append(luckyBackupDir);      // The source is ~/.luckyBackup/
     
@@ -1006,19 +1008,20 @@ bool exportFullProfile(QString ExportPath, QString exportType)
         ExportPath.replace(SLASH,XnixSLASH);
     
     exportArgs.append(ExportPath);          // The destination is given by the user
-
-    //cycnet
+    
+    //cycnet code. Windows use
     if (WINrunning)
-      {
-       //bool createWinRsyncCommand(tempDirPath,QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
+    {
+        //bool createWinRsyncCommand(tempDirPath,QFile command1,QFile command2,bool vss,QString rsyncArgs,QString source,QString dest);
         QString command2=createWinRsyncCommand(Operation[currentOperation] -> GetTempPath(),false,exportArgs,false);
-       if (command2=="")
-         cout << "\nfailed to create bat file in rmProccess";
-       else
-           exportProcess -> start (command2);
-      }
+        if (command2=="")
+            cout << "\nfailed to create bat file in rmProccess";
+        else
+            exportProcess -> start (command2);
+    }
     else
       exportProcess -> start (rsyncCommandPath,exportArgs);
+    
     exportProcess -> waitForFinished();
 
     if (!(exportProcess -> exitCode() == 0))
@@ -1579,18 +1582,18 @@ QStringList AppendArguments(operation *operationToAppend)
     else
     {
         if (operationToAppend -> GetOptionsOwnership())     arguments.append("-tgo");
-        if ((!WINrunning) && (operationToAppend -> GetOptionsPermissions()))   arguments.append("-p");
-        
-        if (WINrunning)
+        if ((!WINrunning) && (operationToAppend -> GetOptionsPermissions()))
+                                                            arguments.append("-p");
+        if ((WINrunning) && (operationToAppend -> GetOptionsPermissions()))       // Windows ONLY: Do not use -p but --backup-nt-streams and --source-filter-tmp=
         {
-            if (operationToAppend -> GetOptionsVss())   arguments.append("--vss");                      // this option is only visbile at windows 
-            if (operationToAppend -> GetOptionsRestorent())   arguments.append("--restore-nt-streams"); // this option is only visbile at windows 
-            if (operationToAppend -> GetOptionsPermissions())                                           // Windows ONLY: Do not use -p but --backup-nt-streams and --source-filter-tmp=
-            {              
-			  arguments.append("--source-filter-tmp="+operationToAppend->GetTempPath());
-              arguments.append("--backup-nt-streams");
-            }
+            arguments.append("--source-filter-tmp="+operationToAppend->GetTempPath());
+            arguments.append("--backup-nt-streams");
         }
+    }
+    if (WINrunning)
+    {
+        if (operationToAppend -> GetOptionsVss())           arguments.append("--vss");                  // this option is only visbile at windows 
+        if (operationToAppend -> GetOptionsRestorent())     arguments.append("--restore-nt-streams");   // this option is only visbile at windows 
     }
     if (operationToAppend -> GetOptionsSymlinks())          arguments.append("-l");
     if (operationToAppend -> GetOptionsDevices())           arguments.append("-D");
@@ -1689,7 +1692,7 @@ QStringList AppendArguments(operation *operationToAppend)
             destString = remoteHost;
             
             sourceString 	= operationToAppend -> GetSource();
-            if (WINrunning) // Bruce patch condition for winpaths~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            if (WINrunning)   // Bruce patch condition for winpaths~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             {
                 // Commented after Juan's patch
                 //destString = fixWinPathForRsync(destString, TRUE);         //fix destination (which is remote)
@@ -1702,7 +1705,7 @@ QStringList AppendArguments(operation *operationToAppend)
             sourceString = remoteHost;
             
             destString 	= operationToAppend -> GetDestination();
-            if (WINrunning) // Bruce patch condition for winpaths~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            if (WINrunning)   // Bruce patch condition for winpaths~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             {
                 // Commented after Juan's patch
                 //sourceString =  fixWinPathForRsync(sourceString, TRUE);     //fix source (which is remote)
@@ -1713,50 +1716,41 @@ QStringList AppendArguments(operation *operationToAppend)
         //add argument for ssh if the checkbox is checked & ssh keyfile
         if (operationToAppend -> GetRemoteSSH())
         {
-        if (WINrunning)
-        {
-            if (operationToAppend -> GetRemoteSSHPassword() != "")
-                if ( operationToAppend -> GetRemoteSSHPort() != 0)
-                  arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  operationToAppend -> GetRemoteSSHPassword() + "\" -p " +
-                                countStr.setNum( operationToAppend -> GetRemoteSSHPort()) );
-                else
-                  arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  operationToAppend -> GetRemoteSSHPassword() + "\"");
-            else
-                if ( operationToAppend -> GetRemoteSSHPort() != 0)
-                  arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -p " + countStr.setNum( operationToAppend -> GetRemoteSSHPort()) );
-                else
-                  arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\"");
-
-        }else{
-
-            if (operationToAppend -> GetRemoteSSHPassword() != "")
+            if (WINrunning)
             {
-                //arguments.append("-e \"ssh -i " + uiM.lineEdit_sshPassword -> text() + "\"");
-            
-                // NOTE:  character ' is not used in linux due to QT comptibility issues. It works just fine without it. It is added at the "validate" dialog though for real CLI command pasting purposes!!  NOTE
-            
-                if (operationToAppend -> GetRemoteSSHPort() != 0)
-                {
-                        arguments.append("-e "+sshCommandPath+" -i " + operationToAppend -> GetRemoteSSHPassword() +
-                            " -p " + countStr.setNum(operationToAppend -> GetRemoteSSHPort()) );
-                }
+                if (operationToAppend -> GetRemoteSSHPassword() != "")
+                    if ( operationToAppend -> GetRemoteSSHPort() != 0 )
+                        arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  operationToAppend -> GetRemoteSSHPassword() + "\" -p " + countStr.setNum( operationToAppend -> GetRemoteSSHPort()) );
+                    else
+                        arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -i \"" +  operationToAppend -> GetRemoteSSHPassword() + "\"");
                 else
-                {
-                        arguments.append("-e "+sshCommandPath+" -i " + operationToAppend -> GetRemoteSSHPassword());
-                }
+                    if ( operationToAppend -> GetRemoteSSHPort() != 0 )
+                        arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\" -p " + countStr.setNum( operationToAppend -> GetRemoteSSHPort()) );
+                    else
+                        arguments.append("-e \""+operationToAppend -> GetSshCommand()+"\" -o \"StrictHostKeyChecking no\" -o \"PasswordAuthentication no\"");
             }
             else
             {
-                if (operationToAppend -> GetRemoteSSHPort() != 0)
+                if (operationToAppend -> GetRemoteSSHPassword() != "")
                 {
-                        arguments.append("-e "+sshCommandPath+" -p " + countStr.setNum(operationToAppend -> GetRemoteSSHPort()) );
+                    //arguments.append("-e \"ssh -i " + uiM.lineEdit_sshPassword -> text() + "\"");
+                
+                    // NOTE:  character ' is not used in linux due to QT comptibility issues. It works just fine without it. It is added at the "validate" dialog though for real CLI command pasting purposes!!  NOTE
+                
+                    if (operationToAppend -> GetRemoteSSHPort() != 0)
+                        arguments.append("-e "+sshCommandPath+" -i " + operationToAppend -> GetRemoteSSHPassword() + " -p " + countStr.setNum(operationToAppend -> GetRemoteSSHPort()) );
+                    else
+                        arguments.append("-e "+sshCommandPath+" -i " + operationToAppend -> GetRemoteSSHPassword());
                 }
                 else
                 {
+                    if (operationToAppend -> GetRemoteSSHPort() != 0)
+                        arguments.append("-e "+sshCommandPath+" -p " + countStr.setNum(operationToAppend -> GetRemoteSSHPort()) );
+                    else
                         arguments.append("-e "+sshCommandPath);
                 }
             }
-        }}
+        }
     }
     else		//Operate locally----------------------------------------------------------------------------------------
     {
@@ -1779,7 +1773,7 @@ QStringList AppendArguments(operation *operationToAppend)
     {
         //fix source and dest for snapshots directory
         QString snapSource=sourceString;	QString snapDest=destString;	//temp variables
-        
+                
         //if ( (snapDest.contains(":")) && (!notXnixRunning))// this is normal for a remote directory (not for OS/2 or win: eg c:\)
         if ( ((snapDest.contains(":")) && (!notXnixRunning)) || (snapDest.contains(":") && WINrunning && operationToAppend -> GetRemote()) )// this is normal for a remote directory
         {
@@ -1787,25 +1781,26 @@ QStringList AppendArguments(operation *operationToAppend)
                 snapDest = "";
         }
 
-        if (!snapSource.endsWith(SLASH))	// this means task is of type "backup dir by name"
+        if (!snapSource.endsWith(SLASH))   // this means task is of type "backup dir by name"
         {
             QString sourceLast = snapSource;
             sourceLast = calculateLastPath(sourceLast); // This is the lowest dir of the source
-            snapSource.append(SLASH);
             
             if (WINrunning && operationToAppend -> GetRemote())
-                snapDest.append(sourceLast + XnixSLASH);
+                sourceLast.append(XnixSLASH);
             else
-                snapDest.append(sourceLast + SLASH);
+                sourceLast.append(SLASH);
+
+            snapDest.append(sourceLast);
         }
+        
         QString prevSnapDateTime = operationToAppend -> GetSnapshotsListItem(operationToAppendCurrentSnaps-2);
         
-        QString prevSnapDir = snapDest + snapDefaultDir + prevSnapDateTime + SLASH;	// This is where the deleted files (== previous snapshot) will go
-        
-        if (WINrunning && operationToAppend -> GetRemote())
+        QString prevSnapDir = snapDest + snapDefaultDir + prevSnapDateTime + SLASH; // This is where the deleted files (== previous snapshot) will go
+        //if (WINrunning && operationToAppend -> GetRemote())
             prevSnapDir.replace(SLASH,XnixSLASH);
-        else if (notXnixRunning)
-            prevSnapDir.replace("/",SLASH);
+        //else if (notXnixRunning)
+        //    prevSnapDir.replace("/",SLASH);
 
         // add arguments to backup files to be be deleted inside the snapshot direcotry
         arguments.append("--backup");
@@ -1816,10 +1811,10 @@ QStringList AppendArguments(operation *operationToAppend)
     // This is outside the condition because the snapDefaultDir also contains the backup of the profile + logs + snaps
     if (!validation)
     {
-        if (WINrunning && operationToAppend -> GetRemote())
+        //if (WINrunning && operationToAppend -> GetRemote())
             arguments.append("--filter=protect " + snapDefaultDir.replace(SLASH,XnixSLASH));
-        else
-            arguments.append("--filter=protect " + snapDefaultDir);
+        //else
+        //    arguments.append("--filter=protect " + snapDefaultDir);
     }
     
     // keep snapshot changes files only for backup task types, not sync
@@ -2037,8 +2032,8 @@ QString sendEmailNow (bool testEmail)
     // Form command to execute (first argument of emailCommand ) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     QString emailCommandExec = emailCommand.left(emailCommand.indexOf(" "));
     if (WINrunning)
-      emailCommandExec=luckyBackupDir+"\\"+emailCommandExec;
-
+        emailCommandExec = luckyBackupDir+"\\"+emailCommandExec;
+    
     // Calculate arguments and command used from variables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     QString emailArgs = emailCommand;   emailArgs.remove(emailCommandExec);
     QStringList emailArgsExec = emailArgs.split(" ",QString::SkipEmptyParts);
@@ -2108,12 +2103,13 @@ QString sendEmailNow (bool testEmail)
             //compressArgs << "-cvzf" << argLog + compressExtension << argLog + emailLogString; // this adds the full path of the logfile inside the tar.gz
             QProcess *compressProcess;                         compressProcess = new QProcess;
             compressProcess -> setProcessChannelMode(QProcess::MergedChannels);
-
+            
             if (WINrunning)
-			{
-				compressProcess -> setWorkingDirectory(luckyBackupDir);
-            	QDir::setCurrent(luckyBackupDir);
-			}
+            {
+                compressProcess -> setWorkingDirectory(luckyBackupDir);
+                QDir::setCurrent(luckyBackupDir);
+            }
+            
             compressProcess -> start (compressCommand,compressArgs);
             compressProcess -> waitForFinished(10000);
             emailArgsExec.replaceInStrings("%c",argLog+compressExtension);
@@ -2151,11 +2147,11 @@ QString sendEmailNow (bool testEmail)
     QProcess *emailProcess;                         emailProcess = new QProcess;
     emailProcess -> setProcessChannelMode(QProcess::MergedChannels);
     if(WINrunning)
-	{	
-		QDir::setCurrent(luckyBackupDir);
-    	emailProcess -> setWorkingDirectory(luckyBackupDir);
-    }	
-	emailProcess -> start (emailCommandExec,emailArgsExec);
+    {   
+        QDir::setCurrent(luckyBackupDir);
+        emailProcess -> setWorkingDirectory(luckyBackupDir);
+    }  
+    emailProcess -> start (emailCommandExec,emailArgsExec);
     emailProcess -> waitForFinished(10000);
     
     // Build the return string ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2426,9 +2422,10 @@ void setTextMessages (QString source,QString dest,bool remoteSource,bool remoteD
     // Task description
     if (taskDescription != "")
         CheckedData.append("<br><br><b>"+QObject::tr("Task description") + ":</b><br>" + taskDescription);
-    
-
 }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Various windows stuff from this point to the end of the file...
 QString getMapdrive(){
     QString mapdrive="w";
     QStringList units;
@@ -2441,7 +2438,6 @@ QString getMapdrive(){
     return mapdrive;
 }
 
-
 //Create execute command in windows ==================================================
 //Modify source and dest with cygpath and analyze vss
 QString createWinMkdirCommand(QString tempPath,bool vss,QStringList rsyncArgs,bool logGui=true)
@@ -2453,7 +2449,7 @@ QString createWinMkdirCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
 QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bool logGui=true)
 {
 //  QFile settingsfile(settingsFile);
-//  if (!settingsfile.open(QIODevice::WriteOnly))	// if the settings file cannot be saved (or fails to create)
+//  if (!settingsfile.open(QIODevice::WriteOnly))   // if the settings file cannot be saved (or fails to create)
 //  {
 //      settingsfile.close();
 //      return FALSE;
@@ -2484,7 +2480,7 @@ QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
         logstring=" >> \""+pipeVssFile->fileName()+"\" 2>> \""+pipeVssErrFile->fileName()+"\"";
 
 
-    if (!setvar.open())	// if the settings file cannot be saved (or fails to create)
+    if (!setvar.open()) // if the settings file cannot be saved (or fails to create)
     {
         setvar.close();
         return "";
@@ -2492,7 +2488,7 @@ QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
     setvar.close(); 
     /*
     QTemporaryFile logfile;
-    if (!logfile.open())	// if the settings file cannot be saved (or fails to create)
+    if (!logfile.open())    // if the settings file cannot be saved (or fails to create)
     {
         logfile.close();
         return "";
@@ -2500,7 +2496,7 @@ QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
     logfile.close();
     */
     //write arrays to file
-    if (!command1.open(QIODevice::WriteOnly | QIODevice::Text))	// if the settings file cannot be saved (or fails to create)
+    if (!command1.open(QIODevice::WriteOnly | QIODevice::Text)) // if the settings file cannot be saved (or fails to create)
     {
         command1.close();
         return "";
@@ -2540,7 +2536,7 @@ QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
     }
 
 
-    if (!command2.open(QIODevice::WriteOnly | QIODevice::Text))	// if the settings file cannot be saved (or fails to create)
+    if (!command2.open(QIODevice::WriteOnly | QIODevice::Text)) // if the settings file cannot be saved (or fails to create)
     {
         command2.close();
         return "";
@@ -2590,7 +2586,7 @@ QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
     outCommand2 << "\n      )";
     outCommand2 << "\n       \""+Operation[currentOperation] -> GetVshadowDir()+"\\vshadow-%VSHADOWVER%-%WINBIT%.exe\" -script=\""+setvar.fileName()+"\" -exec=\""+command1.fileName()+"\" "+source.left(1)+": ";
     outCommand2 << "\n      SET el=%ERRORLEVEL%";
-    outCommand2 << "\n      del "+tempPath+"\\_cygpath.tmp 2>nul";
+    outCommand2 << "\n      del "+tempPath+"/_cygpath.tmp 2>nul";
     //outCommand2 << "\ncall \""+setvar.fileName()+"\"";
     //outCommand2 << "\n  \""+dosdevCommand+"\" "+mapdrive+": %SHADOW_DEVICE_1%  ";
     //outCommand2 << "\n       \""+vshadowDir+"\\vshadow-%VSHADOWVER%-%WINBIT%.exe\" -ds=%SHADOW_ID_1%";
@@ -2608,7 +2604,7 @@ QString createWinRsyncCommand(QString tempPath,bool vss,QStringList rsyncArgs,bo
         outCommand2 << "\nSET /p dest=< "+tempPath+"\\_cygpath.tmp";
         outCommand2 << "\n \""+Operation[currentOperation] -> GetRsyncCommand()+"\" "+args+" \"%source%\" \"%dest%\" ";
         outCommand2 << "\n  SET el=%ERRORLEVEL%";
-        outCommand2 << "\ndel "+tempPath+"\\_cygpath.tmp";
+        outCommand2 << "\ndel "+tempPath+"/_cygpath.tmp 2>nul";
       }
     outCommand2 << "\n:ennd";
     outCommand2 << "\nIF %el% neq 0 exit /b %el%";
@@ -2636,6 +2632,5 @@ void setAppDir(QString s){
   schedulefilename = scheduleDir + "schedule.dat";    // cron data filename
   cronfilename = scheduleDir + "luckyCron.txt";       // cron filename
 }
-
 // end of global.cpp ---------------------------------------------------------------------------
 

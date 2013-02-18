@@ -2241,7 +2241,7 @@ and copying devices via the --devices option.
                   <string>Backup open files</string>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>

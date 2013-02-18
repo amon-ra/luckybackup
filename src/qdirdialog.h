@@ -4,8 +4,7 @@
 **   University
 ** All rights reserved.
 **
-** This file is part of the "gui" module of the Geostatistical Earth
-** Modeling Software (GEMS)
+** This file is part of the luckybackup project
 **
 ** This file may be distributed and/or modified under the terms of the 
 ** license defined by the Stanford Center for Reservoir Forecasting and 

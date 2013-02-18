@@ -4,7 +4,7 @@ file containing all functions for luckybackupwindow
 ===============================================================================================================================
 ===============================================================================================================================
     This file is part of "luckyBackup" project
-    Copyright 2008-2012, Loukas Avgeriou
+    Copyright, Loukas Avgeriou
     luckyBackup is distributed under the terms of the GNU General Public License
     luckyBackup is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ file containing all functions for luckybackupwindow
 project version	: Please see "main.cpp" for project version
 
 developer          : luckyb 
-last modified      : 27 Nov 2012
+last modified      : 13 Nov 2013
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -791,8 +791,8 @@ bool luckyBackupWindow::saveSettings()
         out << "win_rsync_path="            << rsyncCommandPath << "\n";            //output the rsync path for windows or OS2
         out << "win_ssh_path="              << sshCommandPath << "\n";              //output the ssh path for windows or OS2
         out << "cygpath_path="              << cygpathCommand << "\n";
-        out << "dosdev_path="              << dosdevCommand << "\n";
-        out << "vshadowdir_path="              << vshadowDir << "\n";
+        out << "dosdev_path="               << dosdevCommand << "\n";
+        out << "vshadowdir_path="           << vshadowDir << "\n";
         out << "tempdir_path="              << tempDirPath << "\n";
     }
     
@@ -868,9 +868,9 @@ bool luckyBackupWindow::loadSettings()
         if (SettingsLine.startsWith("win_rsync_path="))             rsyncCommandPath = SettingsLine.remove("win_rsync_path=");
         if (SettingsLine.startsWith("win_ssh_path="))               sshCommandPath = SettingsLine.remove("win_ssh_path=");
         if (SettingsLine.startsWith("cygpath_path="))               cygpathCommand = SettingsLine.remove("cygpath_path=");
-        if (SettingsLine.startsWith("dosdev_path="))               dosdevCommand = SettingsLine.remove("dosdev_path=");
-        if (SettingsLine.startsWith("vshadowdir_path="))               vshadowDir = SettingsLine.remove("vshadowdir_path=");
-        if (SettingsLine.startsWith("tempdir_path=") && !isTempDirPath)               tempDirPath = SettingsLine.remove("tempdir_path=");
+        if (SettingsLine.startsWith("dosdev_path="))                dosdevCommand = SettingsLine.remove("dosdev_path=");
+        if (SettingsLine.startsWith("vshadowdir_path="))            vshadowDir = SettingsLine.remove("vshadowdir_path=");
+        if (SettingsLine.startsWith("tempdir_path=") && !isTempDirPath) tempDirPath = SettingsLine.remove("tempdir_path=");
     }
 
     settingsfile.close();
@@ -926,12 +926,7 @@ bool luckyBackupWindow::loadSettingsQV()
 
         if (vString == "win_rsync_path")            rsyncCommandPath = v.toString();
         if (vString == "win_ssh_path")              sshCommandPath = v.toString();
-        if (vString == "cygpath_path")               cygpathCommand = v.toString();
-        if (vString == "dosdev_path")               dosdevCommand = v.toString();
-        if (vString == "vshadowdir_path")               vshadowDir = v.toString();
-        if (vString == "tempdir_path" && !isTempDirPath)               tempDirPath = v.toString();
-
-
+        
         in>>v;	vString = v.toString();
         if (vString!="Settings_file_end")
                 in >> v;

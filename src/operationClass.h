@@ -4,7 +4,7 @@
 ===============================================================================================================================
 ===============================================================================================================================
      This file is part of "luckyBackup" project
-     Copyright 2008-2012, Loukas Avgeriou
+     Copyright, Loukas Avgeriou
      luckyBackup is distributed under the terms of the GNU General Public License
      luckyBackup is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  project version    : Please see "main.cpp" for project version
 
  developer          : luckyb 
- last modified      : 08 Nov 2012
+ last modified      : 13 Jan 2013
 ===============================================================================================================================
 ===============================================================================================================================
 */
@@ -58,6 +58,8 @@ class operation
             itsOptionsFATntfs = FALSE;
             itsOptionsSuper = FALSE;
             itsOptionsNumericIDs = FALSE;
+            itsOptionsVss = FALSE;
+            itsOptionsRestorent = FALSE;
             itsIncludeFromFile = FALSE;
             itsExcludeFromFile = FALSE;
             itsExcludeGVFS = FALSE;
@@ -145,8 +147,17 @@ class operation
         bool GetOptionsFATntfs() const          {return itsOptionsFATntfs;}
         bool GetOptionsSuper() const            {return itsOptionsSuper;}
         bool GetOptionsNumericIDs() const       {return itsOptionsNumericIDs;}
+        //windows related
         bool GetOptionsVss () const             {return itsOptionsVss;}
         bool GetOptionsRestorent () const       {return itsOptionsRestorent;}
+        QString GetTempPath () const            {return itsTempPath;}
+        QString GetLuckyBackupDir ( )           {return itsAppDir;}
+        QString GetVshadowDir () const          {return itsVshadowDir;}
+        QString GetRsyncCommand () const        {return itsRsyncCommand;}
+        QString GetDosdevCommand () const       {return itsDosdevCommand;}
+        QString GetCygpathCommand () const      {return itsCygpathCommand;}
+        QString GetSshCommand () const          {return itsSshCommand;}
+        // user options
         int GetOptionsListSize () const         {return itsOptionsList.size();}
         QString GetOptionsListItem (int itemPosition) const {return itsOptionsList.value(itemPosition);}
 
@@ -267,6 +278,16 @@ class operation
         void SetOptionsFATntfs (bool OptionsFATntfs)        { itsOptionsFATntfs = OptionsFATntfs;}
         void SetOptionsSuper (bool OptionsSuper)            { itsOptionsSuper = OptionsSuper;}
         void SetOptionsNumericIDs (bool OptionsNumeriIDs)   { itsOptionsNumericIDs = OptionsNumeriIDs;}
+        // windows related options
+        void SetOptionsRestorent (bool Options)             { itsOptionsRestorent = Options;}
+        void SetOptionsVss (bool Options)                   { itsOptionsVss = Options;}
+        void SetTempPath (QString s)                        {itsTempPath = s;}
+        void SetLuckyBackupDir (QString s)                  { itsAppDir = s; }
+        void SetVshadowDir (QString s)                      {itsVshadowDir = s;}
+        void SetRsyncCommand (QString s)                    {itsRsyncCommand = s;}
+        void SetDosdevCommand (QString s)                   {itsDosdevCommand = s;}
+        void SetCygpathCommand (QString s)                  {itsCygpathCommand = s;}
+        void SetSshCommand (QString s)                      {itsSshCommand = s;}
         // Command options list - user defined
         void AddOptionsListItem (QString itemText)          { itsOptionsList.append(itemText);}
 
@@ -275,22 +296,7 @@ class operation
         void AddExecuteBeforeListItemState (bool itemState) { itsExecuteBeforeListState.append(itemState);}
         void AddExecuteAfterListItem (QString itemText)     { itsExecuteAfterList.append(itemText);}
         void AddExecuteAfterListItemState (bool itemState)  { itsExecuteAfterListState.append(itemState);}
-        void SetOptionsRestorent (bool Options)             { itsOptionsRestorent = Options;}
-        void SetOptionsVss (bool Options)                   { itsOptionsVss = Options;}
-        QString GetTempPath () const      {return itsTempPath;}
-        void SetTempPath (QString s)    {itsTempPath = s;}
-        QString GetLuckyBackupDir ( ) { return itsAppDir; }
-        void SetLuckyBackupDir (QString s) { itsAppDir = s; }
-        QString GetVshadowDir () const      {return itsVshadowDir;}
-        void SetVshadowDir (QString s)    {itsVshadowDir = s;}
-        QString GetRsyncCommand () const      {return itsRsyncCommand;}
-        void SetRsyncCommand (QString s)    {itsRsyncCommand = s;}
-        QString GetDosdevCommand () const      {return itsDosdevCommand;}
-        void SetDosdevCommand (QString s)    {itsDosdevCommand = s;}
-        QString GetCygpathCommand () const      {return itsCygpathCommand;}
-        void SetCygpathCommand (QString s)    {itsCygpathCommand = s;}
-        QString GetSshCommand () const      {return itsSshCommand;}
-        void SetSshCommand (QString s)    {itsSshCommand = s;}
+
     private:
         QString itsName;
         QStringList itsArguments;
@@ -363,14 +369,9 @@ class operation
         bool itsOptionsFATntfs;
         bool itsOptionsSuper;
         bool itsOptionsNumericIDs;
+        //windows related variables
         bool itsOptionsVss;
         bool itsOptionsRestorent;
-        QStringList itsOptionsList;
-
-        QStringList itsExecuteBeforeList;
-        QList<bool> itsExecuteBeforeListState;
-        QStringList itsExecuteAfterList;
-        QList<bool> itsExecuteAfterListState;
         QString itsTempPath;
         QString itsAppDir;
         QString itsVshadowDir;
@@ -378,7 +379,13 @@ class operation
         QString itsDosdevCommand;
         QString itsCygpathCommand;
         QString itsSshCommand;
+        //user defined options list
+        QStringList itsOptionsList;
 
+        QStringList itsExecuteBeforeList;
+        QList<bool> itsExecuteBeforeListState;
+        QStringList itsExecuteAfterList;
+        QList<bool> itsExecuteAfterListState;
 };
 
 #endif
