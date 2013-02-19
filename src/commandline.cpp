@@ -135,7 +135,8 @@ void commandline::rsyncIT()
             
             // win stuff ~~~~~
             QString tslash;
-            if ( (WINrunning) && (Operation[currentOperation] -> GetRemote()) )
+            if (WINrunning)
+            //if ( (WINrunning) && (Operation[currentOperation] -> GetRemote()) )
                 tslash=XnixSLASH;
             else
                 tslash=SLASH;
@@ -148,10 +149,11 @@ void commandline::rsyncIT()
                 if (!WINrunning)
                     tempDestination.append(sourceLast + SLASH);
                 else
-                    tempDestination.append(sourceLast + tslash);
+                    tempDestination.append(sourceLast.replace("\\",XnixSLASH) + tslash);
             }
                 
-            if (WINrunning && RemoteDestUsed)
+            //if (WINrunning && RemoteDestUsed)
+            if (WINrunning)
                 tempDestination.append (snapDefaultDir.replace("\\",XnixSLASH));
             else
                 tempDestination.append (snapDefaultDir);
@@ -163,7 +165,7 @@ void commandline::rsyncIT()
                 remoteArgs.append("--protect-args");
                 // if ( Operation[currentOperation] -> GetRemotePassword() != "")
                 if ( (Operation[currentOperation]-> GetRemoteModule()) && (Operation[currentOperation] -> GetRemotePassword() != "") )
-                    remoteArgs.append("--password-file=" + ( Operation[currentOperation] -> GetRemotePassword()) );
+                    remoteArgs.append("--password-file=" + ( Operation[currentOperation] -> GetRemotePassword()).replace("\\",XnixSLASH) );
                 if ( Operation[currentOperation] -> GetRemoteSSH())
                 {
                     if (WINrunning)
@@ -288,14 +290,14 @@ void commandline::rsyncIT()
                     int snapToKeep = currentSnaps-maxSnaps + 1;
                     while ( snapToKeep < currentSnaps )
                     {                            
-                        if (WINrunning && RemoteDestUsed)
+                        if (WINrunning)
                             rmArgs.append("--filter=protect " + Operation[currentOperation] -> GetSnapshotsListItem(snapToKeep) + XnixSLASH);
                         else
                             rmArgs.append("--filter=protect " + Operation[currentOperation] -> GetSnapshotsListItem(snapToKeep) + SLASH);
                         snapToKeep++;
                     }
                     // protect the backup profile dir too
-                    if (WINrunning && RemoteDestUsed)
+                    if (WINrunning)
                         rmArgs.append("--filter=protect " + profileName + ".profile" + XnixSLASH);
                     else
                         rmArgs.append("--filter=protect " + profileName + ".profile" + SLASH);

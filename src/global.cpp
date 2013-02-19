@@ -2094,7 +2094,7 @@ QString sendEmailNow (bool testEmail)
             sendlogfile.close();
         }
         
-        if (emailArgsExec.contains("%c"))  // if the argument %c is included, also compress the file
+        if (emailArgsExec.contains("%c") && !WINrunning)  // if the argument %c is included, also compress the file
         {
             // Execute the tar command
             QString compressCommand="tar", compressExtension=".tar.gz";
@@ -2114,8 +2114,11 @@ QString sendEmailNow (bool testEmail)
             compressProcess -> waitForFinished(10000);
             emailArgsExec.replaceInStrings("%c",argLog+compressExtension);
         }
-            
-        emailArgsExec.replaceInStrings("%l",argLog);
+
+        if (WINrunning)
+            emailArgsExec.replaceInStrings("%l",argLog.replace(XnixSLASH,SLASH));
+        else
+            emailArgsExec.replaceInStrings("%l",argLog);
     }
     
     // %d  Current Date
@@ -2164,7 +2167,7 @@ QString sendEmailNow (bool testEmail)
         returnString.append(QObject::tr("The logfile could not be created") + "\n");
     
     returnString.append(  "\n"+QObject::tr("command:   ") + emailCommandExec+
-                            //"\n"+tr("arguments: ") + emailArgs +
+                          //"\n"+QObject::tr("arguments: ") + emailArgsExec.join(" ") +
                             "\n"+QObject::tr("exit code: ") + countStr.setNum(emailProcess -> exitCode()) +
                             "\n"+QObject::tr("output:    ") + errorOccured + "\n" + emailProcess -> readAll() );
     
